@@ -1,5 +1,10 @@
 # react-chart-lite
 
+<p align="center">
+  <img src="docs/weekly-metrics.png" alt="react-chart-lite showcase: Weekly Metrics" />
+  <br/>
+</p>
+
 Hafif, stil bağımsız, React 18/19 uyumlu grafik bileşenleri. CSS Modules ile gelir; theming için CSS değişkenleri ve `unstyled`/`classes` ile tam özelleştirme sunar.
 
 ![npm version](https://img.shields.io/npm/v/react-chart-lite?color=blue)
