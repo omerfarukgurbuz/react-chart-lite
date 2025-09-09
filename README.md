@@ -1,7 +1,7 @@
 # react-chart-lite
 
 <p align="center">
-  <img src="docs/weekly-metrics.png" alt="react-chart-lite showcase: Weekly Metrics" />
+  <img src="docs/main.png" alt="react-chart-lite showcase: Weekly Metrics" />
   <br/>
 </p>
 
