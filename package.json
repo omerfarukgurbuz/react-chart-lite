@@ -1,7 +1,7 @@
 {
   "name": "react-chart-lite",
   "version": "1.0.1",
-  "author": "Omer [maintainer] <you@example.com>",
+  "author": "Omer [maintainer] <mr.gurbuzf@gmail.com>",
   "license": "MIT",
   "type": "module",
   "types": "dist/index.d.ts",
