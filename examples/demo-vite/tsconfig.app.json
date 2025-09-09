@@ -23,12 +23,8 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 
-    /* Paths for local library source */
-    "baseUrl": ".",
-    "paths": {
-      "react-chart-lite": ["../../src"],
-      "@/*": ["../../src/*"]
-    }
+    /* No local path alias: use npm package types */
+    "baseUrl": "."
   },
   "include": ["src"]
 }

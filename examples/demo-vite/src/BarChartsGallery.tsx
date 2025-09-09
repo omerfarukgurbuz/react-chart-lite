@@ -169,10 +169,10 @@ export default function BarChartsGallery() {
   ]
 
   const horizontalConfigs: HCfg[] = [
-    { title: 'H1 Basic (dashed grid)', props: { data: horizontalData, legends: horizontalLegends, title: 'Ürün Bazlı Satış', showLegend: true, showGrid: true, showTooltip: true, showVerticalGrid: true, showHorizontalGrid: false, gridLineVariant: 'dashed', apsis: true, ordinat: true } },
-    { title: 'H2 Solid Grid + Both Grids', props: { data: horizontalData, legends: horizontalLegends, showLegend: true, showGrid: true, showTooltip: true, showVerticalGrid: true, showHorizontalGrid: true, gridLineVariant: 'solid', apsis: true, ordinat: true } },
-    { title: 'H3 Dotted Grid + Row Separators', props: { data: horizontalData, legends: horizontalLegends, showLegend: true, showGrid: true, showTooltip: true, showVerticalGrid: false, showHorizontalGrid: true, gridLineVariant: 'dotted', apsis: true, ordinat: true } },
-    { title: 'H4 Values On', props: { data: horizontalData, legends: horizontalLegends, showLegend: true, showValues: true, showGrid: true, showTooltip: true, showVerticalGrid: true, showHorizontalGrid: false } },
+    { title: 'H1 Basic (dashed grid)', props: { data: horizontalData, legends: horizontalLegends, title: 'Ürün Bazlı Satış', showLegend: true, showGrid: true, showTooltip: true, showVerticalGrid: true, gridLineVariant: 'dashed', apsis: true, ordinat: true } },
+    { title: 'H2 Solid Grid + Both Grids', props: { data: horizontalData, legends: horizontalLegends, showLegend: true, showGrid: true, showTooltip: true, showVerticalGrid: true, gridLineVariant: 'solid', apsis: true, ordinat: true } },
+    { title: 'H3 Dotted Grid + Row Separators', props: { data: horizontalData, legends: horizontalLegends, showLegend: true, showGrid: true, showTooltip: true, showVerticalGrid: false, gridLineVariant: 'dotted', apsis: true, ordinat: true } },
+    { title: 'H4 Values On', props: { data: horizontalData, legends: horizontalLegends, showLegend: true, showValues: true, showGrid: true, showTooltip: true, showVerticalGrid: true } },
     { title: 'H5 Bar Height 18px', props: { data: horizontalData, legends: horizontalLegends, showLegend: true, barHeight: 18, showGrid: true, showTooltip: true, showVerticalGrid: true } },
     { title: 'H6 Bar Height 42px', props: { data: horizontalData, legends: horizontalLegends, showLegend: true, barHeight: 42, showGrid: true, showTooltip: true, showVerticalGrid: true } },
     { title: 'H7 Tight Categories', props: { data: horizontalData, legends: horizontalLegends, showLegend: true, categorySpacing: 4, showGrid: true, showTooltip: true, showVerticalGrid: true } },
@@ -181,8 +181,8 @@ export default function BarChartsGallery() {
     { title: 'H10 Custom Scale (0..150)', props: { data: horizontalData, legends: horizontalLegends, showLegend: true, scale: { min: 0, max: 150, intervals: 5 }, showGrid: true, showTooltip: true, showVerticalGrid: true } },
     { title: 'H11 Hide Axes (apsis=false, ordinat=false)', props: { data: horizontalData, legends: horizontalLegends, showLegend: true, showGrid: true, showTooltip: true, showVerticalGrid: true, apsis: false, ordinat: false } },
     // New: 10 categories, 3 bars each
-    { title: 'H12 10 Categories + 3 Bars Each (values)', props: { data: h10DataThreeBars, legends: horizontalLegends, showLegend: true, showGrid: true, showVerticalGrid: true, showHorizontalGrid: true, showValues: true, gridLineVariant: 'dashed', apsis: true, ordinat: true, showTooltip: true } },
-    { title: 'H13 10 Categories Solid Grid', props: { data: h10DataThreeBars, legends: horizontalLegends, showLegend: true, showGrid: true, showVerticalGrid: true, showHorizontalGrid: true, gridLineVariant: 'solid', apsis: true, ordinat: true, showTooltip: true } },
+    { title: 'H12 10 Categories + 3 Bars Each (values)', props: { data: h10DataThreeBars, legends: horizontalLegends, showLegend: true, showGrid: true, showVerticalGrid: true, showValues: true, gridLineVariant: 'dashed', apsis: true, ordinat: true, showTooltip: true } },
+    { title: 'H13 10 Categories Solid Grid', props: { data: h10DataThreeBars, legends: horizontalLegends, showLegend: true, showGrid: true, showVerticalGrid: true, gridLineVariant: 'solid', apsis: true, ordinat: true, showTooltip: true } },
   ]
 
   return (

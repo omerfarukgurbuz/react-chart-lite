@@ -7,8 +7,8 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      'react-chart-lite': fileURLToPath(new URL('../../src', import.meta.url)),
-      '@': fileURLToPath(new URL('../../src', import.meta.url)),
+      '@': fileURLToPath(new URL('./node_modules/react-chart-lite/dist', import.meta.url)),
+      // Use installed npm package instead of local source
       react: fileURLToPath(new URL('./node_modules/react', import.meta.url)),
       'react-dom': fileURLToPath(new URL('./node_modules/react-dom', import.meta.url)),
       'react/jsx-runtime': fileURLToPath(new URL('./node_modules/react/jsx-runtime.js', import.meta.url)),
