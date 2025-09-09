@@ -1,0 +1,2 @@
+export { default as VerticalBarChart } from './VerticalBarChart';
+export type { VerticalBarChartProps, VerticalBarChartBar, VerticalBarChartDataItem, VerticalBarChartScale, VerticalBarChartLineSeries, ChartLegendItem } from './VerticalBarChart.types'; 

@@ -1,0 +1,175 @@
+.radar {
+  width: 100%;
+  background-color: var(--rcl-surface-bg, #ffffff);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  font-family: var(
+    --rcl-font-family,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Ubuntu,
+    Cantarell,
+    Noto Sans,
+    Helvetica Neue,
+    Arial,
+    "Apple Color Emoji",
+    "Segoe UI Emoji"
+  );
+}
+
+.radar__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.radar__icon {
+  position: relative;
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.radar__titles {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.radar__title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--rcl-text-primary, #1b1b1b);
+  line-height: 21px;
+  margin-bottom: 0.25rem;
+}
+.radar__subtitle {
+  font-size: 0.625rem;
+  color: var(--rcl-text-primary, #1b1b1b);
+  font-weight: 500;
+}
+
+.radar__container {
+  width: 100%;
+}
+.radar__svgWrap {
+  position: relative;
+  width: 100%;
+}
+.radar__square {
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%;
+}
+.radar__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.radar__grid {
+  color: var(--rcl-border-color, #bec1c6);
+}
+.radar__grid-level {
+}
+.radar__axis {
+  stroke: var(--rcl-border-color, #bec1c6);
+}
+.radar__axisLabel {
+  position: absolute;
+  font-size: 10px;
+  line-height: 100%;
+  color: var(--rcl-text-muted, #3a3e44);
+  font-weight: 400;
+  text-align: center;
+  width: 100%;
+}
+
+.radar__legend {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  column-gap: 2rem;
+  row-gap: 0.75rem;
+  margin-top: 38px;
+  width: 100%;
+}
+.radar__legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.radar__legend-color {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 9999px;
+}
+.radar__legend-label {
+  font-size: 0.75rem;
+  color: var(--rcl-text-primary, #1b1b1b);
+  font-weight: 400;
+}
+
+.radar__series--dimmed {
+  opacity: 0.25;
+  transition: opacity 150ms ease-in-out;
+}
+.radar__dot--dimmed {
+  opacity: 0.25;
+  transition: opacity 150ms ease-in-out;
+}
+
+.radar--grid-solid .radar__grid-level {
+  stroke: var(--rcl-border-color, #bec1c6);
+}
+.radar--grid-solid .radar__axis {
+  stroke: var(--rcl-border-color, #bec1c6);
+}
+
+.radar--grid-dashed .radar__grid-level {
+  stroke: var(--rcl-border-color, #bec1c6);
+  stroke-dasharray: 4 4;
+}
+.radar--grid-dashed .radar__axis {
+  stroke: var(--rcl-border-color, #bec1c6);
+  stroke-dasharray: 4 4;
+}
+
+.radar--grid-dotted .radar__grid-level {
+  stroke: var(--rcl-border-color, #bec1c6);
+  stroke-dasharray: 1 4;
+}
+.radar--grid-dotted .radar__axis {
+  stroke: var(--rcl-border-color, #bec1c6);
+  stroke-dasharray: 1 4;
+}
+
+.radar__tooltip {
+  position: absolute;
+  z-index: 10;
+  padding: 0.25rem 0.5rem;
+  background-color: var(--rcl-tooltip-bg, #1b1b1b);
+  color: var(--rcl-tooltip-text, #ffffff);
+  font-size: 10px;
+  border-radius: 0.25rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+  white-space: nowrap;
+  transform: translateX(-50%) translateY(-120%);
+}
+
+@media (min-width: 768px) {
+  .radar__icon { width: 2.75rem; height: 2.75rem; }
+  .radar__title { font-size: 0.875rem; margin-bottom: 0.625rem; }
+  .radar__subtitle { font-size: 0.75rem; }
+  .radar__legend-color { width: 1rem; height: 1rem; }
+  .radar__legend-label { font-size: 0.875rem; }
+  .radar__tooltip { font-size: 0.75rem; }
+}

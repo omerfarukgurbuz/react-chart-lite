@@ -1,0 +1,57 @@
+{
+  "name": "react-chart-lite",
+  "version": "1.0.0",
+  "author": "Omer [maintainer] <you@example.com>",
+  "license": "MIT",
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/omer/react-chart-lite.git"
+  },
+  "bugs": {
+    "url": "https://github.com/omer/react-chart-lite/issues"
+  },
+  "homepage": "https://github.com/omer/react-chart-lite#readme",
+  "keywords": [
+    "react",
+    "charts",
+    "chart",
+    "bar-chart",
+    "pie-chart",
+    "radar-chart",
+    "data-visualization",
+    "react-library",
+    "typescript",
+    "css-modules"
+  ],
+  "peerDependencies": {
+    "react": "^18 || ^19",
+    "react-dom": "^18 || ^19"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.12",
+    "@types/react-dom": "^19.1.9",
+    "tsc-alias": "^1.8.16",
+    "typescript": "^5.9.2"
+  },
+  "scripts": {
+    "build": "yarn clean && tsc && tsc-alias && yarn run copycss",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "yarn build",
+    "copycss": "node scripts/copy-scss.cjs"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+}

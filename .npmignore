@@ -1,0 +1,89 @@
+# Source files (only dist is published)
+src/
+tsconfig.json
+scripts/
+
+# Examples
+examples/
+
+# Development files
+.gitignore
+.eslintrc*
+.prettierrc*
+.stylelintrc*
+.editorconfig
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+.circleci/
+
+# Documentation source files
+docs/
+*.md
+!README.md
+!LICENSE
+
+# Testing
+__tests__/
+test/
+tests/
+coverage/
+.nyc_output/
+jest.config.*
+*.test.*
+*.spec.*
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+.project
+.classpath
+.c9/
+.settings/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+.temp/
+
+# Build tools config
+rollup.config.*
+vite.config.*
+webpack.config.*
+.babelrc*
+postcss.config.*
+
+# Package manager files  
+yarn.lock
+package-lock.json
+pnpm-lock.yaml
+.pnp.*
+.yarn/
+
+# TypeScript cache
+*.tsbuildinfo
+.tsc-cache/
+
+# Optional caches
+.npm/
+.eslintcache
+.stylelintcache
+
+# Misc
+.env*
+*.local
