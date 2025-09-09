@@ -39,10 +39,11 @@
     "typescript": "^5.9.2"
   },
   "scripts": {
-    "build": "npm run clean && tsc && tsc-alias && npm run copycss",
+    "build": "npm run clean && tsc && tsc-alias && npm run copycss && npm run stripmaps",
     "clean": "rm -rf dist",
     "prepublishOnly": "npm run build",
-    "copycss": "node scripts/copy-scss.cjs"
+    "copycss": "node scripts/copy-scss.cjs",
+    "stripmaps": "find dist -type f -name \"*.map\" -delete"
   },
   "exports": {
     ".": {
