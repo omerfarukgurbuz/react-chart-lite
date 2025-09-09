@@ -39,9 +39,9 @@
     "typescript": "^5.9.2"
   },
   "scripts": {
-    "build": "yarn clean && tsc && tsc-alias && yarn run copycss",
+    "build": "npm run clean && tsc && tsc-alias && npm run copycss",
     "clean": "rm -rf dist",
-    "prepublishOnly": "yarn build",
+    "prepublishOnly": "npm run build",
     "copycss": "node scripts/copy-scss.cjs"
   },
   "exports": {

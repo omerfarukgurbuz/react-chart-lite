@@ -15,10 +15,10 @@
 Lightweight, style-agnostic chart components for React 18/19. Ships with CSS Modules; customize via CSS variables, `unstyled`, and `classes`.
 
 ![npm version](https://img.shields.io/npm/v/react-chart-lite?color=blue)
-![license](https://img.shields.io/github/license/omerfarukgurbuz/react-chart-lite)
-![CI](https://img.shields.io/github/actions/workflow/status/omerfarukgurbuz/react-chart-lite/release.yml?label=release)
-![CI](https://img.shields.io/github/actions/workflow/status/omerfarukgurbuz/react-chart-lite/ci.yml?label=ci)
-![types](https://img.shields.io/badge/types-TypeScript-blue)
+![license](https://img.shields.io/npm/l/react-chart-lite)
+![Release](https://img.shields.io/github/actions/workflow/status/omerfarukgurbuz/react-chart-lite/release.yml?label=release)
+![CI](https://img.shields.io/github/actions/workflow/status/omerfarukgurbuz/react-chart-lite/ci.yml?branch=main&label=ci)
+![types](https://img.shields.io/npm/types/react-chart-lite)
 
 > Note: This library is client-side only. Use inside React client components (e.g., add `"use client"` in Next.js pages/components).
 
