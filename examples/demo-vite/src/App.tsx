@@ -72,11 +72,19 @@ const horizontalLegends = [
   { id: 'target', label: 'Hedef', color: '#10B981' },
 ]
 
+// Pastel palette requested for PieChart examples
+const PIE_PASTEL_COLORS = [
+  'rgb(231, 204, 204)',
+  'rgb(237, 232, 220)',
+  'rgb(165, 182, 141)',
+  'rgb(193, 207, 161)',
+] as const
+
 const pieLegends = [
-  { id: 'chrome', label: 'Chrome', color: '#4285F4' },
-  { id: 'safari', label: 'Safari', color: '#10B981' },
-  { id: 'firefox', label: 'Firefox', color: '#F97316' },
-  { id: 'edge', label: 'Edge', color: '#8B5CF6' },
+  { id: 'chrome', label: 'Chrome', color: PIE_PASTEL_COLORS[0] },
+  { id: 'safari', label: 'Safari', color: PIE_PASTEL_COLORS[1] },
+  { id: 'firefox', label: 'Firefox', color: PIE_PASTEL_COLORS[2] },
+  { id: 'edge', label: 'Edge', color: PIE_PASTEL_COLORS[3] },
 ]
 
 const pieData = [
@@ -86,7 +94,19 @@ const pieData = [
   { value: 6, legendId: 'edge' },
 ]
 
+// Alternative distribution to diversify visuals with the same pastel palette
+const pieDataAlt = [
+  { value: 40, legendId: 'chrome' },
+  { value: 28, legendId: 'safari' },
+  { value: 18, legendId: 'firefox' },
+  { value: 14, legendId: 'edge' },
+]
+
 const radarAxes = ['Hız', 'Kalite', 'Kapsam', 'Stabilite', 'Kullanılabilirlik']
+const radarAxes6 = ['Hız', 'Kalite', 'Kapsam', 'Stabilite', 'Kullanılabilirlik', 'Dokümantasyon']
+const radarAxes7 = ['Hız', 'Kalite', 'Kapsam', 'Stabilite', 'Kullanılabilirlik', 'Dokümantasyon', 'Destek']
+const radarAxes8 = ['Hız', 'Kalite', 'Kapsam', 'Stabilite', 'Kullanılabilirlik', 'Dokümantasyon', 'Destek', 'Topluluk']
+const radarAxes9 = ['Hız', 'Kalite', 'Kapsam', 'Stabilite', 'Kullanılabilirlik', 'Dokümantasyon', 'Destek', 'Topluluk', 'Güvenlik']
 
 const radarLegends = [
   { id: 'v1', label: 'Sürüm v1', color: '#3B82F6', fillOpacity: 0.25 },
@@ -96,6 +116,39 @@ const radarLegends = [
 const radarSeries = [
   { values: [65, 70, 75, 60, 55], legendId: 'v1' },
   { values: [80, 78, 72, 69, 74], legendId: 'v2' },
+]
+
+// Pastel radar legends using the same palette as PieChart
+const radarPastelLegends = [
+  { id: 'p1', label: 'Pastel A', color: PIE_PASTEL_COLORS[0], fillOpacity: 0.25 },
+  { id: 'p2', label: 'Pastel B', color: PIE_PASTEL_COLORS[1], fillOpacity: 0.25 },
+  { id: 'p3', label: 'Pastel C', color: PIE_PASTEL_COLORS[2], fillOpacity: 0.25 },
+  { id: 'p4', label: 'Pastel D', color: PIE_PASTEL_COLORS[3], fillOpacity: 0.25 },
+]
+
+function radarValues(seed: number, base: number, axes: string[] = radarAxes) {
+  return axes.map((_, i) => {
+    const n = (seedNoise(i + 1 + seed) - 0.5) * 2
+    return Math.max(0, Math.round(base + n * 20))
+  })
+}
+
+const radarPastelSeries1 = [
+  { legendId: 'p1', values: radarValues(1, 60) },
+  { legendId: 'p2', values: radarValues(2, 70) },
+]
+
+const radarPastelSeries2 = [
+  { legendId: 'p1', values: radarValues(3, 65) },
+  { legendId: 'p2', values: radarValues(4, 75) },
+  { legendId: 'p3', values: radarValues(5, 55) },
+]
+
+const radarPastelSeriesAll = [
+  { legendId: 'p1', values: radarValues(6, 62) },
+  { legendId: 'p2', values: radarValues(7, 72) },
+  { legendId: 'p3', values: radarValues(8, 58) },
+  { legendId: 'p4', values: radarValues(9, 66) },
 ]
 
 // Full-width testbed data (EN labels, 20 columns, 3 bar series, 4 trend lines)
@@ -308,12 +361,28 @@ function App() {
       <Section title="PieChart – Pad Angle ve Kompakt">
         <div style={{ maxWidth: 420 }}>
           <PieChart
-            data={pieData}
+            data={pieDataAlt}
             legends={pieLegends}
             title="Pazar Payı (Kompakt)"
             showLegend={false}
             size={300}
             padAngle={2}
+            showTooltip
+          />
+        </div>
+      </Section>
+
+      <Section title="PieChart – Donut (Pastel) + Etiketler (Alt Dağılım)">
+        <div style={{ maxWidth: 420 }}>
+          <PieChart
+            data={pieDataAlt}
+            legends={pieLegends}
+            title="Pastel Donut"
+            showLegend
+            size={300}
+            innerRadiusRatio={0.55}
+            showLabels
+            labelFormatter={(percent, value, label) => `${label} ${value} (${(percent * 100).toFixed(0)}%)`}
             showTooltip
           />
         </div>
@@ -372,6 +441,46 @@ function App() {
           />
         </div>
       </Section>
+
+      {/* Pastel Radar Gallery (10 examples) */}
+      <div className="md:col-span-2 lg:col-span-3">
+        <Section title="RadarChart – Pastel Gallery (10 examples)">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+            {/* 1 */}
+            <RadarChart axes={radarAxes} series={radarPastelSeries1} legends={radarPastelLegends} title="P1" showLegend showGrid size={240} showTooltip />
+            {/* 2 */}
+            <RadarChart axes={radarAxes} series={radarPastelSeries2} legends={radarPastelLegends} title="P2" showLegend showGrid gridLineVariant="solid" size={240} showTooltip />
+            {/* 3 */}
+            <RadarChart axes={radarAxes} series={radarPastelSeriesAll} legends={radarPastelLegends} title="P3" showLegend showGrid gridLineVariant="dotted" size={240} showTooltip />
+            {/* 4 */}
+            <RadarChart axes={radarAxes} series={[{ legendId: 'p3', values: radarValues(10, 62) }, { legendId: 'p4', values: radarValues(11, 64) }]} legends={radarPastelLegends} title="P4" showLegend showGrid size={240} showTooltip />
+            {/* 5 */}
+            <RadarChart axes={radarAxes} series={[{ legendId: 'p1', values: radarValues(12, 70) }]} legends={radarPastelLegends} title="P5 (Single)" showLegend showGrid size={240} showTooltip />
+            {/* 6 */}
+            <RadarChart axes={radarAxes} series={[{ legendId: 'p2', values: radarValues(13, 68) }, { legendId: 'p4', values: radarValues(14, 60) }]} legends={radarPastelLegends} title="P6" showLegend showGrid gridLineVariant="dashed" size={240} showTooltip />
+            {/* 7 */}
+            <RadarChart axes={radarAxes} series={[{ legendId: 'p3', values: radarValues(15, 58) }, { legendId: 'p1', values: radarValues(16, 66) }]} legends={radarPastelLegends} title="P7" showLegend showGrid size={240} showTooltip />
+            {/* 8 */}
+            <RadarChart axes={radarAxes} series={[{ legendId: 'p4', values: radarValues(17, 72) }, { legendId: 'p2', values: radarValues(18, 63) }]} legends={radarPastelLegends} title="P8" showLegend showGrid gridLineVariant="dotted" size={240} showTooltip />
+            {/* 9 */}
+            <RadarChart axes={radarAxes} series={[{ legendId: 'p2', values: radarValues(19, 74) }, { legendId: 'p3', values: radarValues(20, 61) }, { legendId: 'p1', values: radarValues(21, 57) }]} legends={radarPastelLegends} title="P9" showLegend showGrid size={240} showTooltip />
+            {/* 10 */}
+            <RadarChart axes={radarAxes} series={[{ legendId: 'p4', values: radarValues(22, 65) }]} legends={radarPastelLegends} title="P10 (Single)" showLegend showGrid gridLineVariant="solid" size={240} showTooltip />
+          </div>
+        </Section>
+      </div>
+
+      {/* Multi-axes (6/7/8/9) pastel examples */}
+      <div className="md:col-span-2 lg:col-span-3">
+        <Section title="RadarChart – Multi-Axes (6/7/8/9)">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <RadarChart axes={radarAxes6} series={[{ legendId: 'p1', values: radarValues(31, 64, radarAxes6) }, { legendId: 'p2', values: radarValues(32, 70, radarAxes6) }]} legends={radarPastelLegends} title="6-gen" showLegend showGrid size={260} showTooltip />
+            <RadarChart axes={radarAxes7} series={[{ legendId: 'p3', values: radarValues(33, 62, radarAxes7) }, { legendId: 'p1', values: radarValues(34, 68, radarAxes7) }]} legends={radarPastelLegends} title="7-gen" showLegend showGrid size={260} showTooltip />
+            <RadarChart axes={radarAxes8} series={[{ legendId: 'p4', values: radarValues(35, 66, radarAxes8) }, { legendId: 'p2', values: radarValues(36, 72, radarAxes8) }]} legends={radarPastelLegends} title="8-gen" showLegend showGrid size={260} showTooltip />
+            <RadarChart axes={radarAxes9} series={[{ legendId: 'p1', values: radarValues(37, 70, radarAxes9) }, { legendId: 'p3', values: radarValues(38, 62, radarAxes9) }, { legendId: 'p4', values: radarValues(39, 58, radarAxes9) }]} legends={radarPastelLegends} title="9-gen" showLegend showGrid size={260} showTooltip />
+          </div>
+        </Section>
+      </div>
     </div>
   )
 }

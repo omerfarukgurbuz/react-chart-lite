@@ -1,9 +1,24 @@
 # react-chart-lite
 
 <p align="center">
-  <img src="docs/main.png" alt="react-chart-lite showcase: Weekly Metrics" />
+  <img src="docs/main.gif" alt="react-chart-lite showcase: Weekly Metrics" />
   <br/>
 </p>
+
+<div align="center">
+  <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:1100px;margin:0 auto;">
+    <img src="docs/ring.png" alt="Ring chart" style="flex:1 1 320px;max-width:32%;min-width:280px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.06);" />
+    <img src="docs/radardot.png" alt="Radar dots" style="flex:1 1 320px;max-width:32%;min-width:280px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.06);" />
+    <img src="docs/radar2.png" alt="Bar metrics" style="flex:1 1 320px;max-width:32%;min-width:280px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.06);" />
+  </div>
+  <div style="height:12px"></div>
+  <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:1100px;margin:0 auto;">
+    <img src="docs/radar.png" alt="Radar variant" style="flex:1 1 320px;max-width:32%;min-width:280px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.06);" />
+    <img src="docs/pie.png" alt="Donut variant" style="flex:1 1 320px;max-width:32%;min-width:280px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.06);" />
+    <img src="docs/horizontal.png" alt="Horizontal/Vertical bars" style="flex:1 1 320px;max-width:32%;min-width:280px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.06);" />
+  </div>
+  <br/>
+</div>
 
 Hafif, stil bağımsız, React 18/19 uyumlu grafik bileşenleri. CSS Modules ile gelir; theming için CSS değişkenleri ve `unstyled`/`classes` ile tam özelleştirme sunar.
 
