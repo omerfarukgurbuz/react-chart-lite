@@ -3,8 +3,9 @@
 Hafif, stil bağımsız, React 18/19 uyumlu grafik bileşenleri. CSS Modules ile gelir; theming için CSS değişkenleri ve `unstyled`/`classes` ile tam özelleştirme sunar.
 
 ![npm version](https://img.shields.io/npm/v/react-chart-lite?color=blue)
-![license](https://img.shields.io/github/license/omer/react-chart-lite)
-![CI](https://img.shields.io/github/actions/workflow/status/omer/react-chart-lite/release.yml?label=release)
+![license](https://img.shields.io/github/license/omerfarukgurbuz/react-chart-lite)
+![CI](https://img.shields.io/github/actions/workflow/status/omerfarukgurbuz/react-chart-lite/release.yml?label=release)
+![CI](https://img.shields.io/github/actions/workflow/status/omerfarukgurbuz/react-chart-lite/ci.yml?label=ci)
 ![types](https://img.shields.io/badge/types-TypeScript-blue)
 
 ## Kurulum

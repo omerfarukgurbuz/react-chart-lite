@@ -10,12 +10,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/omer/react-chart-lite.git"
+    "url": "git+https://github.com/omerfarukgurbuz/react-chart-lite.git"
   },
   "bugs": {
-    "url": "https://github.com/omer/react-chart-lite/issues"
+    "url": "https://github.com/omerfarukgurbuz/react-chart-lite/issues"
   },
-  "homepage": "https://github.com/omer/react-chart-lite#readme",
+  "homepage": "https://github.com/omerfarukgurbuz/react-chart-lite#readme",
   "keywords": [
     "react",
     "charts",
