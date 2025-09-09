@@ -4,17 +4,13 @@
   <img src="docs/main.gif" alt="react-chart-lite showcase: Weekly Metrics" />
   <br/>
   <img src="docs/1.png" alt="react-chart-lite vertical" />
-   <br/>
+  <br/>
   <img src="docs/2.png" alt="react-chart-lite radar" />
-   <br/>
+  <br/>
   <img src="docs/3.png" alt="react-chart-lite pie" />
-   <br/>
+  <br/>
   <img src="docs/4.png" alt="react-chart-lite horizontal" />
 </p>
-
-
-  <br/>
-</div>
 
 Hafif, stil bağımsız, React 18/19 uyumlu grafik bileşenleri. CSS Modules ile gelir; theming için CSS değişkenleri ve `unstyled`/`classes` ile tam özelleştirme sunar.
 
@@ -23,6 +19,32 @@ Hafif, stil bağımsız, React 18/19 uyumlu grafik bileşenleri. CSS Modules ile
 ![CI](https://img.shields.io/github/actions/workflow/status/omerfarukgurbuz/react-chart-lite/release.yml?label=release)
 ![CI](https://img.shields.io/github/actions/workflow/status/omerfarukgurbuz/react-chart-lite/ci.yml?label=ci)
 ![types](https://img.shields.io/badge/types-TypeScript-blue)
+
+## İçindekiler
+
+- [Özellikler](#özellikler)
+- [Kurulum](#kurulum)
+- [Hızlı Başlangıç](#hızlı-başlangıç)
+- [Bileşenler ve API](#bileşenler-ve-api)
+- [Theming ve Özelleştirme](#theming-ve-özelleştirme)
+- [SSR/CSR](#ssrcsr)
+- [Erişilebilirlik](#erişilebilirlik)
+- [Örnekler](#örnekler)
+- [Showcase](#showcase)
+- [Paketleme ve Kullanım Notları](#paketleme-ve-kullanım-notları)
+- [Katkı ve Sürümleme](#katkı-ve-sürümleme)
+- [Lisans](#lisans)
+
+## Özellikler
+
+- Hafif ve bağımsız: Yalnızca React peer dependency
+- React 18/19 uyumlu, TypeScript ile güçlü tipler
+- SSR uyumlu; etkileşim/ölçüm tarayıcıda etkinleşir
+- CSS Modules tabanlı; `unstyled`, `classes`, `className`, `style` ile tam kontrol
+- CSS custom properties ile tema oluşturma
+- Erişilebilirlik dostu (klavye ve screen reader)
+- Ağaç-sallama uyumlu ESM dağıtımı
+- Tailwind'e bağımlı değil (yalnızca örneklerde kullanılabilir)
 
 ## Kurulum
 
@@ -40,22 +62,6 @@ pnpm add react-chart-lite
 Peer dependencies:
 - react: ^18 || ^19
 - react-dom: ^18 || ^19
-
-## İçindekiler
-
-- [Kurulum](#kurulum)
-- [Hızlı Başlangıç](#hızlı-başlangıç)
-- [Bileşenler ve Tipler](#bileşenler-ve-tipler)
-- [API Surface](#api-surface)
-- [Theming ve Özelleştirme](#theming-ve-özelleştirme)
-- [SSR/CSR](#ssrcsr)
-- [Ölçek (Scale)](#ölçek-scale)
-- [Erişilebilirlik](#erişilebilirlik)
-- [Örnekler](#örnekler)
-- [Showcase](#showcase)
-- [Paketleme ve Kullanım Notları](#paketleme-ve-kullanım-notları)
-- [Katkı ve Sürümleme](#katkı-ve-sürümleme)
-- [Lisans](#lisans)
 
 ## Hızlı Başlangıç
 
@@ -104,9 +110,7 @@ export default function Example() {
 }
 ```
 
-## Bileşenler ve Tipler
-
-## API Surface
+## Bileşenler ve API
 
 ```ts
 // Components
@@ -130,7 +134,7 @@ PieChartProps, PieChartDatum, PieChartLegendItem
 RadarChartProps, RadarChartSeries, RadarChartScale, RadarChartLegendItem
 ```
 
-Component dokümantasyonları:
+Detaylı dokümantasyonlar:
 - [`HorizontalBarChart`](src/components/ui/HorizontalBarChart/README.md)
 - [`VerticalBarChart`](src/components/ui/VerticalBarChart/README.md)
 - [`PieChart`](src/components/ui/PieChart/README.md)
@@ -170,14 +174,9 @@ Notlar:
 
 ## SSR/CSR
 
-- Bileşenler client interactivity gerektirdiği için etkileşimli katmanlar `use client` ile işaretlidir.
-- SSR ortamında güvenle render edilebilir; tooltip ölçümü ve animasyonlar tarayıcıda etkinleşir.
-- Next.js için: Bileşenleri normal şekilde import edip kullanabilirsiniz. Stil importu ekstra ayar gerektirmez.
-
-## Ölçek (Scale)
-
-- Sağlamazsanız `min=0`, `intervals=5` ile "nice" bir `max` otomatik hesaplanır.
-- `formatter` ile grid değerlerini biçimlendirebilirsiniz (ör. yüzde, para, adet).
+- Bileşenler interactivity gerektiren bölümler için `use client` ile işaretlidir.
+- SSR ortamında güvenle render edilebilir; ölçüm ve animasyonlar tarayıcıda etkinleşir.
+- Next.js: Normal import ile kullanılır; ekstra stil ayarı gerekmez.
 
 ## Erişilebilirlik
 
@@ -196,10 +195,10 @@ npm i && npm run dev
 
 ## Showcase
 
-Aşağıdaki örneklerde iki grafik de birlikte gösterilir. Tüm snippet'lerde legend açıktır; `apsis` ve `ordinat` varsayılan olarak açık ve örneklerde de açık bırakılmıştır.
+Öne çıkan kullanım senaryalarından kısa örnekler:
 
 ### 1) scale
-- Ne görürsünüz: 0..200 aralığında sabitlenmiş ölçek ve 5 aralık ile grid etiketleri.
+- 0..200 aralığında sabit ölçek ve 5 aralık ile grid etiketleri.
 
 ```tsx
 import { VerticalBarChart, HorizontalBarChart } from 'react-chart-lite';
@@ -253,39 +252,8 @@ export default function ShowcaseScale() {
 }
 ```
 
-### 2) showGrid
-- Ne görürsünüz: Grid çizgileri kapalı; eksen çizgileri (apsis/ordinat) görünür.
-
-```tsx
-import { VerticalBarChart, HorizontalBarChart } from 'react-chart-lite';
-const legends = [
-  { id: 'sales', label: 'Satış', color: '#00ADB5' },
-  { id: 'target', label: 'Hedef', color: '#526D82' },
-  { id: 'returns', label: 'İade', color: '#9DB2BF' },
-];
-const data = [
-  { category: 'A', bars: [
-    { label: 'Satış', value: 80, legendId: 'sales' },
-    { label: 'Hedef', value: 70, legendId: 'target' },
-  ]},
-  { category: 'B', bars: [
-    { label: 'Satış', value: 120, legendId: 'sales' },
-    { label: 'Hedef', value: 110, legendId: 'target' },
-  ]},
-];
-
-export default function ShowcaseShowGrid() {
-  return (
-    <>
-      <HorizontalBarChart data={data} legends={legends} showLegend showGrid={false} apsis ordinat />
-      <VerticalBarChart data={data} legends={legends} showLegend showGrid={false} apsis ordinat />
-    </>
-  );
-}
-```
-
-### 3) onBarClick
-- Ne görürsünüz: Bara tıkladığınızda bilgi veren etkileşim (alert/log) tetiklenir.
+### 2) onBarClick
+- Bara tıkladığınızda bilgi veren etkileşim tetiklenir.
 
 ```tsx
 import { VerticalBarChart, HorizontalBarChart } from 'react-chart-lite';
@@ -314,112 +282,8 @@ export default function ShowcaseOnBarClick() {
 }
 ```
 
-### 4) showTooltip
-- Ne görürsünüz: Hover üzerinde imleç konumunda tooltip gösterilir.
-
-```tsx
-import { VerticalBarChart, HorizontalBarChart } from 'react-chart-lite';
-const legends = [
-  { id: 'sales', label: 'Satış', color: '#00ADB5' },
-  { id: 'target', label: 'Hedef', color: '#526D82' },
-];
-const data = [
-  { category: 'C', bars: [
-    { label: 'Satış', value: 110, legendId: 'sales', tooltip: 'Satış: 110' },
-    { label: 'Hedef', value: 95, legendId: 'target', tooltip: 'Hedef: 95' },
-  ]},
-];
-
-export default function ShowcaseTooltip() {
-  return (
-    <>
-      <HorizontalBarChart data={data} legends={legends} showLegend showGrid showVerticalGrid showTooltip apsis ordinat />
-      <VerticalBarChart data={data} legends={legends} showLegend showGrid showHorizontalGrid showTooltip apsis ordinat />
-    </>
-  );
-}
-```
-
-### 5) gridLineVariant
-- Ne görürsünüz: Grid çizgileri düz (solid) stilde.
-
-```tsx
-import { VerticalBarChart, HorizontalBarChart } from 'react-chart-lite';
-const legends = [
-  { id: 'sales', label: 'Satış', color: '#00ADB5' },
-  { id: 'target', label: 'Hedef', color: '#526D82' },
-];
-const data = [
-  { category: 'D', bars: [
-    { label: 'Satış', value: 130, legendId: 'sales' },
-    { label: 'Hedef', value: 120, legendId: 'target' },
-  ]},
-];
-
-export default function ShowcaseGridVariant() {
-  return (
-    <>
-      <HorizontalBarChart data={data} legends={legends} showLegend showGrid showVerticalGrid gridLineVariant="solid" apsis ordinat />
-      <VerticalBarChart data={data} legends={legends} showLegend showGrid showHorizontalGrid gridLineVariant="solid" apsis ordinat />
-    </>
-  );
-}
-```
-
-### 6) showVerticalGrid
-- Ne görürsünüz: Dikey değer ızgarası açık (horizontal barda), dikey kategori ızgarası açık (vertical barda).
-
-```tsx
-import { VerticalBarChart, HorizontalBarChart } from 'react-chart-lite';
-const legends = [
-  { id: 'sales', label: 'Satış', color: '#00ADB5' },
-  { id: 'target', label: 'Hedef', color: '#526D82' },
-];
-const data = [
-  { category: 'E', bars: [
-    { label: 'Satış', value: 70, legendId: 'sales' },
-    { label: 'Hedef', value: 65, legendId: 'target' },
-  ]},
-];
-
-export default function ShowcaseVerticalGrid() {
-  return (
-    <>
-      <HorizontalBarChart data={data} legends={legends} showLegend showGrid showVerticalGrid gridLineVariant="dashed" apsis ordinat />
-      <VerticalBarChart data={data} legends={legends} showLegend showGrid showVerticalGrid gridLineVariant="dashed" apsis ordinat />
-    </>
-  );
-}
-```
-
-### 7) showHorizontalGrid
-- Ne görürsünüz: Yatay grid/satır ayırıcıları açık.
-
-```tsx
-import { VerticalBarChart, HorizontalBarChart } from 'react-chart-lite';
-const legends = [
-  { id: 'sales', label: 'Satış', color: '#00ADB5' },
-  { id: 'target', label: 'Hedef', color: '#526D82' },
-];
-const data = [
-  { category: 'F', bars: [
-    { label: 'Satış', value: 85, legendId: 'sales' },
-    { label: 'Hedef', value: 92, legendId: 'target' },
-  ]},
-];
-
-export default function ShowcaseHorizontalGrid() {
-  return (
-    <>
-      <HorizontalBarChart data={data} legends={legends} showLegend showGrid showHorizontalGrid gridLineVariant="dotted" apsis ordinat />
-      <VerticalBarChart data={data} legends={legends} showLegend showGrid showHorizontalGrid gridLineVariant="dotted" apsis ordinat />
-    </>
-  );
-}
-```
-
-### 8) showLine + lineSeries (Vertical)
-- Ne görürsünüz: Barların üzerinde trend/target/sales çizgi serileri (noktalarla birlikte).
+### 3) showLine + lineSeries (Vertical)
+- Barların üzerinde trend/target/sales çizgi serileri (noktalarla birlikte).
 
 ```tsx
 import { VerticalBarChart } from 'react-chart-lite';
@@ -466,12 +330,6 @@ export default function ShowcaseLines() {
 ```
 
 > Not: `showLine` ve `lineSeries` sadece `VerticalBarChart` için geçerlidir.
-
----
-
-Tüm örneklerde `apsis` ve `ordinat` açık bırakılmıştır; eksen çizgileri her zaman görünür.
-
-## Lisans
 
 ## Paketleme ve Kullanım Notları
 
