@@ -102,6 +102,18 @@ const pieDataAlt = [
   { value: 14, legendId: 'edge' },
 ]
 
+// Line legends and colors (use vibrant palette from existing examples)
+const lineLegends = [
+  { id: 'trendA', label: 'Trend A', color: '#F67280' },
+  { id: 'trendB', label: 'Trend B', color: '#6C5B7B' },
+]
+
+// Enhanced line-only series (4 points for 4 categories)
+const lineOnlySeries = [
+  { legendId: 'trendA', dashed: false, values: [108, 124, 136, 150] },
+  { legendId: 'trendB', dashed: true,  values: [95, 118, 127, 140] },
+]
+
 const radarAxes = ['Hız', 'Kalite', 'Kapsam', 'Stabilite', 'Kullanılabilirlik']
 const radarAxes6 = ['Hız', 'Kalite', 'Kapsam', 'Stabilite', 'Kullanılabilirlik', 'Dokümantasyon']
 const radarAxes7 = ['Hız', 'Kalite', 'Kapsam', 'Stabilite', 'Kullanılabilirlik', 'Dokümantasyon', 'Destek']
@@ -388,6 +400,58 @@ function App() {
         </div>
       </Section>
 
+      {/* === Yeni: Üstte 3'lü grid (Ring, Pie, Radar) === */}
+      <div className="md:col-span-2 lg:col-span-3">
+        <Section title="3'lü Grid: Ring + Pie + Radar">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Ring (Donut) */}
+            <div className="flex items-center justify-center">
+              <div className="w-full bg-white rounded-xl shadow-sm border p-4">
+                <PieChart
+                  data={pieDataAlt}
+                  legends={pieLegends}
+                  title="Ring"
+                  showLegend={false}
+                  size={280}
+                  innerRadiusRatio={0.6}
+                  showLabels
+                  labelFormatter={(percent, _value, label) => `${label} ${(percent * 100).toFixed(0)}%`}
+                  showTooltip
+                />
+              </div>
+            </div>
+            {/* Pie */}
+            <div className="flex items-center justify-center">
+              <div className="w-full bg-white rounded-xl shadow-sm border p-4">
+                <PieChart
+                  data={pieData}
+                  legends={pieLegends}
+                  title="Pie"
+                  showLegend
+                  size={300}
+                  showTooltip
+                />
+              </div>
+            </div>
+            {/* Radar */}
+            <div className="flex items-center justify-center">
+              <div className="w-full bg-white rounded-xl shadow-sm border p-4">
+                <RadarChart
+                  axes={radarAxes}
+                  series={radarSeries}
+                  legends={radarLegends}
+                  title="Radar"
+                  showLegend
+                  showGrid
+                  size={320}
+                  showTooltip
+                />
+              </div>
+            </div>
+          </div>
+        </Section>
+      </div>
+
       <Section title="RadarChart – Çoklu Seri">
         <div style={{ maxWidth: 560 }}>
           <RadarChart
@@ -441,6 +505,116 @@ function App() {
           />
         </div>
       </Section>
+
+      {/* === Yeni: Altta 3'lü grid (Vertical + Horizontal + Line-only) === */}
+      <div className="md:col-span-2 lg:col-span-3">
+        <Section title="3'lü Grid: Vertical + Horizontal + Line-only">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Vertical */}
+            <div className="flex items-center justify-center">
+              <div className="w-full bg-white rounded-xl shadow-sm border p-4">
+                <VerticalBarChart
+                  data={verticalData}
+                  legends={verticalLegends}
+                  title="Vertical"
+                  showLegend
+                  showGrid
+                  showVerticalGrid
+                  showHorizontalGrid
+                  chartHeight={280}
+                  showTooltip
+                />
+              </div>
+            </div>
+            {/* Horizontal */}
+            <div className="flex items-center justify-center">
+              <div className="w-full bg-white rounded-xl shadow-sm border p-4">
+                <HorizontalBarChart
+                  data={horizontalData}
+                  legends={horizontalLegends}
+                  title="Horizontal"
+                  showLegend
+                  showGrid
+                  showTooltip
+                />
+              </div>
+            </div>
+            {/* Line-only (true line-only: no bars; custom line legends + 2 series) */}
+            <div className="flex items-center justify-center">
+              <div className="w-full bg-white rounded-xl shadow-sm border p-4">
+                <VerticalBarChart
+                  data={verticalData.map(d => ({ ...d, bars: [] }))}
+                  legends={lineLegends}
+                  title="Line Only – Two Series"
+                  showLegend
+                  showGrid
+                  showVerticalGrid
+                  gridLineVariant="dashed"
+                  chartHeight={280}
+                  showLine
+                  lineSeries={lineOnlySeries}
+                  lineWidth={2}
+                  showLinePoints
+                  linePointRadius={3}
+                  showTooltip
+                />
+              </div>
+            </div>
+          </div>
+        </Section>
+      </div>
+
+      {/* === Yeni: Bars üçlüsünün hemen altına 3'lü grid (Radar + Ring + Pie) === */}
+      <div className="md:col-span-2 lg:col-span-3">
+        <Section title="3'lü Grid: Radar + Ring + Pie">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Radar */}
+            <div className="flex items-center justify-center">
+              <div className="w-full bg-white rounded-xl shadow-sm border p-4">
+                <RadarChart
+                  axes={radarAxes}
+                  series={radarSeries}
+                  legends={radarLegends}
+                  title="Radar"
+                  showLegend
+                  showGrid
+                  size={320}
+                  showTooltip
+                />
+              </div>
+            </div>
+            {/* Ring */}
+            <div className="flex items-center justify-center">
+              <div className="w-full bg-white rounded-xl shadow-sm border p-4">
+                <PieChart
+                  data={pieDataAlt}
+                  legends={pieLegends}
+                  title="Ring"
+                  showLegend={false}
+                  size={280}
+                  innerRadiusRatio={0.6}
+                  showLabels
+                  labelFormatter={(percent, _value, label) => `${label} ${(percent * 100).toFixed(0)}%`}
+                  showTooltip
+                />
+              </div>
+            </div>
+            {/* Pie */}
+            <div className="flex items-center justify-center">
+              <div className="w-full bg-white rounded-xl shadow-sm border p-4">
+                <PieChart
+                  data={pieData}
+                  legends={pieLegends}
+                  title="Pie"
+                  showLegend
+                  size={300}
+                  showTooltip
+                />
+              </div>
+            </div>
+          </div>
+        </Section>
+      </div>
 
       {/* Pastel Radar Gallery (10 examples) */}
       <div className="md:col-span-2 lg:col-span-3">

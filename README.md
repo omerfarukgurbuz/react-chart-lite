@@ -3,24 +3,16 @@
 <p align="center">
   <img src="docs/main.gif" alt="react-chart-lite showcase: Weekly Metrics" />
   <br/>
+  <img src="docs/1.png" alt="react-chart-lite vertical" />
+   <br/>
+  <img src="docs/2.png" alt="react-chart-lite radar" />
+   <br/>
+  <img src="docs/3.png" alt="react-chart-lite pie" />
+   <br/>
+  <img src="docs/4.png" alt="react-chart-lite horizontal" />
 </p>
 
-<div align="center">
-  <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:1100px;margin:0 auto;">
-    <img src="docs/ring.png" alt="Ring chart" style="flex:1 1 320px;max-width:32%;min-width:280px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.06);" />
-    <img src="docs/radardot.png" alt="Radar dots" style="flex:1 1 320px;max-width:32%;min-width:280px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.06);" />
-  
-  </div>
-  <div style="height:12px"></div>
-  <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:1100px;margin:0 auto;">
-    <img src="docs/radar.png" alt="Radar variant" style="flex:1 1 320px;max-width:32%;min-width:280px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.06);" />
-      <img src="docs/radar2.png" alt="Bar metrics" style="flex:1 1 320px;max-width:32%;min-width:280px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.06);" />
-  </div>
-   <div style="height:12px"></div>
-    <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:1100px;margin:0 auto;">
-    <img src="docs/pie.png" alt="Donut variant" style="flex:1 1 320px;max-width:32%;min-width:280px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.06);" />
-    <img src="docs/horizontal.png" alt="Horizontal/Vertical bars" style="flex:1 1 320px;max-width:32%;min-width:280px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.06);" />
-  </div>
+
   <br/>
 </div>
 
