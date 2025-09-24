@@ -1,7 +1,12 @@
 {
   "name": "react-chart-lite",
   "version": "1.0.1",
-  "author": "Omer [maintainer] <mr.gurbuzf@gmail.com>",
+  "description": "A lightweight and simple library for creating beautiful bar, pie, and radar charts in React applications.",
+  "author": {
+    "name": "Omer Faruk Gurbuz",
+    "email": "mr.gurbuzf@gmail.com",
+    "url": "https://github.com/omerfarukgurbuz"
+  },
   "license": "MIT",
   "type": "module",
   "types": "dist/index.d.ts",
@@ -20,13 +25,17 @@
     "react",
     "charts",
     "chart",
+    "graph",
+    "visualization",
+    "data-visualization",
     "bar-chart",
     "pie-chart",
     "radar-chart",
-    "data-visualization",
+    "react-component",
     "react-library",
+    "lightweight",
     "typescript",
-    "css-modules"
+    "react-chart-lite"
   ],
   "peerDependencies": {
     "react": "^18 || ^19",
