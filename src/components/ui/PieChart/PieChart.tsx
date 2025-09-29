@@ -80,14 +80,28 @@ function PieChart({
   ), [unstyled, className, classes?.root]);
 
   // Tooltip handlers (stable)
-  const showTooltipAt = useCallback((
-    evt: React.MouseEvent<SVGPathElement, MouseEvent>,
-    content: string
-  ) => {
-    tooltip.showAtEvent(evt as unknown as React.MouseEvent, content, svgWrapRef.current);
+  // Unified tooltip handlers using data-tooltip
+  const handleEnterOrMove = useCallback((evt: React.MouseEvent<SVGElement>) => {
+    const el = evt.currentTarget as Element;
+    const content = el.getAttribute('data-tooltip') || '';
+    if (content) {
+      tooltip.showAtEvent(evt as unknown as React.MouseEvent, content, svgWrapRef.current);
+    }
   }, [tooltip]);
 
-  const hideTooltip = useCallback(() => {
+  const handleLeave = useCallback(() => {
+    tooltip.hide();
+  }, [tooltip]);
+
+  const handleFocus = useCallback((evt: React.FocusEvent<SVGElement>) => {
+    const el = evt.currentTarget as Element;
+    const content = el.getAttribute('data-tooltip') || '';
+    if (content) {
+      tooltip.showAtElement(el, content, svgWrapRef.current);
+    }
+  }, [tooltip]);
+
+  const handleBlur = useCallback(() => {
     tooltip.hide();
   }, [tooltip]);
 
@@ -123,9 +137,13 @@ function PieChart({
                     className={classNames(
                       !unstyled && isDimmed && styles['pie__slice--dimmed']
                     )}
-                    onMouseEnter={e => showTooltipAt(e, titleText)}
-                    onMouseMove={e => showTooltipAt(e, titleText)}
-                    onMouseLeave={hideTooltip}
+                    data-tooltip={titleText}
+                    tabIndex={0}
+                    onMouseEnter={handleEnterOrMove}
+                    onMouseMove={handleEnterOrMove}
+                    onMouseLeave={handleLeave}
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
                   >
                     {!showTooltip && <title>{titleText}</title>}
                   </path>

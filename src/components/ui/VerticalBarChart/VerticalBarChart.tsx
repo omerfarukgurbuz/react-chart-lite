@@ -3,7 +3,7 @@
 /**
  * Client component for interactive vertical bar chart.
  */
-import React, { useRef, useEffect, useId, useState, useMemo } from 'react';
+import React, { useRef, useEffect, useId, useState, useMemo, useCallback } from 'react';
 import { ChartHeader } from '../shared/chart/parts/ChartHeader';
 import { Legend as SharedLegend } from '../shared/chart/parts/Legend';
 import { ValueGrid } from '../shared/chart/parts/ValueGrid';
@@ -89,20 +89,14 @@ const renderLineLayer = (
   legendMap: Map<string, ChartLegendItem>,
   hoveredLegendId: string | null,
   showTooltip: boolean,
-  tooltip: ReturnType<typeof useTooltip>,
-  bodyEl: HTMLDivElement | null,
+  onEnterOrMove: (evt: React.MouseEvent<SVGElement>) => void,
+  onLeave: () => void,
+  onFocus: (evt: React.FocusEvent<SVGElement>) => void,
+  onBlur: () => void,
   unstyled: boolean,
   classes: VerticalBarChartProps['classes']
 ): React.ReactElement | null => {
   if (!showLine || !lineSeries || lineSeries.length === 0) return null;
-
-  const showTooltipAt = (evt: React.MouseEvent, content: string) => {
-    tooltip.showAtEvent(evt, content, bodyEl);
-  };
-
-  const hideTooltip = () => {
-    tooltip.hide();
-  };
 
   return (
     <svg
@@ -157,10 +151,13 @@ const renderLineLayer = (
                   r={Math.max(1, linePointRadius)}
                   fill={strokeColor}
                   className={!unstyled && isDimmed ? styles['chart__dot--dimmed'] : undefined}
-                  onMouseEnter={(e) => showTooltipAt(e, titleText)}
-                  onMouseMove={(e) => showTooltipAt(e, titleText)}
-                  onMouseLeave={hideTooltip}
+                  data-tooltip={titleText}
                   aria-label={titleText}
+                  onMouseEnter={onEnterOrMove}
+                  onMouseMove={onEnterOrMove}
+                  onMouseLeave={onLeave}
+                  onFocus={onFocus}
+                  onBlur={onBlur}
                 >
                   {!showTooltip && <title>{titleText}</title>}
                 </circle>
@@ -184,8 +181,10 @@ const renderBars = (
   onBarClick: VerticalBarChartProps['onBarClick'] | undefined,
   hoveredLegendId: string | null,
   showTooltip: boolean,
-  tooltip: ReturnType<typeof useTooltip>,
-  bodyEl: HTMLDivElement | null,
+  onEnterOrMove: (evt: React.MouseEvent<HTMLButtonElement>) => void,
+  onLeave: () => void,
+  onFocus: (evt: React.FocusEvent<HTMLButtonElement>) => void,
+  onBlur: () => void,
   unstyled: boolean,
   classes: VerticalBarChartProps['classes']
 ): React.ReactElement[] => (
@@ -219,14 +218,6 @@ const renderBars = (
         const titleText = bar.tooltip || ariaLabel;
         const isDimmed = hoveredLegendId !== null && bar.legendId !== hoveredLegendId;
 
-        const showTooltipAt = (evt: React.MouseEvent, content: string) => {
-          tooltip.showAtEvent(evt, content, bodyEl);
-        };
-
-        const hideTooltip = () => {
-          tooltip.hide();
-        };
-
         return (
           <button
             key={barIndex}
@@ -239,10 +230,13 @@ const renderBars = (
             onClick={() => onBarClick?.(bar, categoryIndex, barIndex)}
             aria-label={ariaLabel}
             title={showTooltip ? undefined : titleText}
+            data-tooltip={titleText}
             type="button"
-            onMouseEnter={(e) => showTooltipAt(e, titleText)}
-            onMouseMove={(e) => showTooltipAt(e, titleText)}
-            onMouseLeave={hideTooltip}
+            onMouseEnter={onEnterOrMove}
+            onMouseMove={onEnterOrMove}
+            onMouseLeave={onLeave}
+            onFocus={onFocus}
+            onBlur={onBlur}
           >
             {showValues && (
               <span className={unstyled ? classes?.barValue : classNames(styles['chart__bar-value'], classes?.barValue)}>{bar.value}</span>
@@ -365,6 +359,43 @@ function VerticalBarChart({
     };
   }, []);
 
+  // Unified tooltip handlers using data-tooltip (for buttons and svg circles)
+  const handleEnterOrMoveBtn = useCallback((evt: React.MouseEvent<HTMLButtonElement>) => {
+    const el = evt.currentTarget as Element;
+    const content = el.getAttribute('data-tooltip') || '';
+    if (content) {
+      tooltip.showAtEvent(evt as unknown as React.MouseEvent, content, columnsRef.current);
+    }
+  }, [tooltip]);
+
+  const handleEnterOrMoveSvg = useCallback((evt: React.MouseEvent<SVGElement>) => {
+    const el = evt.currentTarget as Element;
+    const content = el.getAttribute('data-tooltip') || '';
+    if (content) {
+      tooltip.showAtEvent(evt as unknown as React.MouseEvent, content, columnsRef.current);
+    }
+  }, [tooltip]);
+
+  const handleLeave = useCallback(() => { tooltip.hide(); }, [tooltip]);
+
+  const handleFocusBtn = useCallback((evt: React.FocusEvent<HTMLButtonElement>) => {
+    const el = evt.currentTarget as Element;
+    const content = el.getAttribute('data-tooltip') || '';
+    if (content) {
+      tooltip.showAtElement(el, content, columnsRef.current);
+    }
+  }, [tooltip]);
+
+  const handleFocusSvg = useCallback((evt: React.FocusEvent<SVGElement>) => {
+    const el = evt.currentTarget as Element;
+    const content = el.getAttribute('data-tooltip') || '';
+    if (content) {
+      tooltip.showAtElement(el, content, columnsRef.current);
+    }
+  }, [tooltip]);
+
+  const handleBlur = useCallback(() => { tooltip.hide(); }, [tooltip]);
+
   return (
     <div className={unstyled ? classNames(className, classes?.root) : containerClasses} id={chartId} style={style}>
       <ChartHeader variant="vertical" iconSrc={iconSrc} title={title} subtitle={subtitle} />
@@ -390,8 +421,10 @@ function VerticalBarChart({
               onBarClick,
               hoveredLegendId,
               showTooltip,
-              tooltip,
-              columnsRef.current,
+              handleEnterOrMoveBtn,
+              handleLeave,
+              handleFocusBtn,
+              handleBlur,
               unstyled,
               classes
             )}
@@ -409,8 +442,10 @@ function VerticalBarChart({
               legendMap,
               hoveredLegendId,
               showTooltip,
-              tooltip,
-              columnsRef.current,
+              handleEnterOrMoveSvg,
+              handleLeave,
+              handleFocusSvg,
+              handleBlur,
               unstyled,
               classes
             )}

@@ -62,8 +62,10 @@ const BarComponent: React.FC<{
   unstyled: boolean;
   classes?: any;
   onBarClick?: (bar: ChartBar, categoryIndex: number, barIndex: number) => void;
-  onShowTooltip: (evt: React.MouseEvent, content: string) => void;
-  onHideTooltip: () => void;
+  onEnterOrMove: (evt: React.MouseEvent<HTMLElement>) => void;
+  onLeave: () => void;
+  onFocus: (evt: React.FocusEvent<HTMLElement>) => void;
+  onBlur: () => void;
 }> = ({
   bar,
   categoryIndex,
@@ -83,8 +85,10 @@ const BarComponent: React.FC<{
   unstyled,
   classes,
   onBarClick,
-  onShowTooltip,
-  onHideTooltip,
+  onEnterOrMove,
+  onLeave,
+  onFocus,
+  onBlur,
 }) => {
   const barStyle = createBarStyles(
     width,
@@ -101,14 +105,6 @@ const BarComponent: React.FC<{
   const handleClick = useCallback(() => {
     onBarClick?.(bar, categoryIndex, barIndex);
   }, [bar, categoryIndex, barIndex, onBarClick]);
-
-  const handleMouseEnter = useCallback((e: React.MouseEvent) => {
-    onShowTooltip(e, titleText);
-  }, [onShowTooltip, titleText]);
-
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    onShowTooltip(e, titleText);
-  }, [onShowTooltip, titleText]);
 
   return (
     <div
@@ -129,11 +125,14 @@ const BarComponent: React.FC<{
         }
         style={barStyle}
         onClick={handleClick}
-        onMouseEnter={handleMouseEnter}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={onHideTooltip}
+        onMouseEnter={onEnterOrMove}
+        onMouseMove={onEnterOrMove}
+        onMouseLeave={onLeave}
+        onFocus={onFocus}
+        onBlur={onBlur}
         aria-label={ariaLabel}
         title={showTooltip ? undefined : titleText}
+        data-tooltip={titleText}
         type="button"
       >
         {showValues && (
@@ -233,12 +232,28 @@ function HorizontalBarChart({
         );
   }, [unstyled, className, classes?.root, animated, gridVariantClass, showGrid, apsis, ordinat]);
 
-  // Tooltip event handlers
-  const handleShowTooltip = useCallback((evt: React.MouseEvent, content: string) => {
-    tooltip.showAtEvent(evt, content, bodyRef.current);
+  // Unified tooltip handlers using data-tooltip
+  const handleEnterOrMove = useCallback((evt: React.MouseEvent<HTMLElement>) => {
+    const el = evt.currentTarget as Element;
+    const content = el.getAttribute('data-tooltip') || '';
+    if (content) {
+      tooltip.showAtEvent(evt as unknown as React.MouseEvent, content, bodyRef.current);
+    }
   }, [tooltip, bodyRef]);
 
-  const handleHideTooltip = useCallback(() => {
+  const handleLeave = useCallback(() => {
+    tooltip.hide();
+  }, [tooltip]);
+
+  const handleFocus = useCallback((evt: React.FocusEvent<HTMLElement>) => {
+    const el = evt.currentTarget as Element;
+    const content = el.getAttribute('data-tooltip') || '';
+    if (content) {
+      tooltip.showAtElement(el, content, bodyRef.current);
+    }
+  }, [tooltip, bodyRef]);
+
+  const handleBlur = useCallback(() => {
     tooltip.hide();
   }, [tooltip]);
 
@@ -289,31 +304,33 @@ function HorizontalBarChart({
                     const isDimmed = hoveredLegendId !== null && bar.legendId !== hoveredLegendId;
                     const isLastBar = barIndex === item.bars.length - 1;
 
-                    return (
-                      <BarComponent
-                        key={`bar-${categoryIndex}-${barIndex}`}
-                        bar={bar}
-                        categoryIndex={categoryIndex}
-                        barIndex={barIndex}
-                        isLastBar={isLastBar}
-                        barHeight={barHeight}
-                        barSpacing={barSpacing}
-                        color={color}
-                        width={width}
-                        ariaLabel={ariaLabel}
-                        titleText={titleText}
-                        isDimmed={isDimmed}
-                        animated={animated}
-                        animationDuration={animationDuration}
-                        showValues={showValues}
-                        showTooltip={showTooltip}
-                        unstyled={unstyled}
-                        classes={classes}
-                        onBarClick={onBarClick}
-                        onShowTooltip={handleShowTooltip}
-                        onHideTooltip={handleHideTooltip}
-                      />
-                    );
+                      return (
+                        <BarComponent
+                          key={`bar-${categoryIndex}-${barIndex}`}
+                          bar={bar}
+                          categoryIndex={categoryIndex}
+                          barIndex={barIndex}
+                          isLastBar={isLastBar}
+                          barHeight={barHeight}
+                          barSpacing={barSpacing}
+                          color={color}
+                          width={width}
+                          ariaLabel={ariaLabel}
+                          titleText={titleText}
+                          isDimmed={isDimmed}
+                          animated={animated}
+                          animationDuration={animationDuration}
+                          showValues={showValues}
+                          showTooltip={showTooltip}
+                          unstyled={unstyled}
+                          classes={classes}
+                          onBarClick={onBarClick}
+                          onEnterOrMove={handleEnterOrMove}
+                          onLeave={handleLeave}
+                          onFocus={handleFocus}
+                          onBlur={handleBlur}
+                        />
+                      );
                   })}
                 </div>
               </div>
