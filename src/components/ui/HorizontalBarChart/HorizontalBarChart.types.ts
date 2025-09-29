@@ -36,8 +36,8 @@ export interface HorizontalBarChartProps {
   categorySpacing?: number;
   /** Grid çizgilerinin gösterilip gösterilmeyeceği (ana anahtar) */
   showGrid?: boolean;
-  /** Dikey değer ızgarası (X ekseni değer çizgileri) görünürlüğü */
-  showVerticalGrid?: boolean;
+  /** Değer ızgarası görünürlüğü (x ekseni boyunca dikey çizgiler) */
+  showValueGrid?: boolean;
   /** Grid çizgisi stili (noktalı/ düz) */
   gridLineVariant?: GridLineVariant;
   /** Apsis çizgisini (alt sınır) göster */

@@ -43,10 +43,10 @@ export interface VerticalBarChartLineSeries {
   categorySpacing?: number;
   /** Grid çizgilerinin genel olarak gösterilip gösterilmeyeceği (ana anahtar) */
   showGrid?: boolean;
-  /** Yatay grid çizgilerinin gösterilip gösterilmeyeceği */
-  showHorizontalGrid?: boolean;
-  /** Dikey grid çizgilerinin gösterilip gösterilmeyeceği */
-  showVerticalGrid?: boolean;
+  /** Değer ızgarası (yatay çizgiler) görünürlüğü */
+  showValueGrid?: boolean;
+  /** Kategori ızgarası (dikey kolonlar) görünürlüğü */
+  showCategoryGrid?: boolean;
   /** Grid çizgisi stili (noktalı/ düz) */
   gridLineVariant?: GridLineVariant;
   /** Değerlerin bar üzerinde gösterilip gösterilmeyeceği */

@@ -285,8 +285,8 @@ function VerticalBarChart({
   barSpacing = 2,
   categorySpacing = 8,
   showGrid = true,
-  showHorizontalGrid = true,
-  showVerticalGrid = false,
+  showValueGrid = true,
+  showCategoryGrid = false,
   gridLineVariant = 'dashed',
   showValues = false,
   animated = true,
@@ -371,8 +371,8 @@ function VerticalBarChart({
 
       <div className={unstyled ? classes?.container : classNames(styles.chart__container, classes?.container)}>
         <div className={unstyled ? classes?.body : classNames(styles.chart__body, classes?.body)}>
-          <ValueGrid variant="verticalBar" orientation="horizontal" show={showGrid && showHorizontalGrid} gridLines={gridLines} formatter={calculatedScale.formatter} />
-          <CategoryGrid show={showGrid && showVerticalGrid} categoryCount={data.length} categorySpacing={categorySpacing} apsis={showBaselineAxis} ordinat={showLeftAxis} />
+          <ValueGrid variant="verticalBar" orientation="horizontal" show={showGrid && showValueGrid} gridLines={gridLines} formatter={calculatedScale.formatter} />
+          <CategoryGrid show={showGrid && showCategoryGrid} categoryCount={data.length} categorySpacing={categorySpacing} apsis={showBaselineAxis} ordinat={showLeftAxis} />
 
           <div
             ref={columnsRef}

@@ -168,7 +168,7 @@ function HorizontalBarChart({
   barSpacing = 2,
   categorySpacing = 8,
   showGrid = true,
-  showVerticalGrid = true,
+  showValueGrid = true,
   gridLineVariant = 'dashed',
   apsis = true,
   ordinat = true,
@@ -255,12 +255,12 @@ function HorizontalBarChart({
       <div className={unstyled ? classes?.container : classNames(styles.chart__container, classes?.container)}>
         <div className={unstyled ? classes?.body : classNames(styles.chart__body, classes?.body)} ref={bodyRef}>
           {/* Background grid lines */}
-          <ValueGrid 
-            variant="horizontalBar" 
-            orientation="vertical" 
-            show={showGrid && showVerticalGrid} 
-            gridLines={gridLines} 
-            formatter={calculatedScale.formatter} 
+          <ValueGrid
+            variant="horizontalBar"
+            orientation="vertical"
+            show={showGrid && showValueGrid}
+            gridLines={gridLines}
+            formatter={calculatedScale.formatter}
           />
 
           {/* Chart data rows */}
