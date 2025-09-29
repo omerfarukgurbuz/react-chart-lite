@@ -43,7 +43,7 @@ export interface RadarChartProps {
 	dotRadius?: number;
 	/** Stroke width for series outline */
 	strokeWidth?: number;
-	/** Default fill opacity for series area (0..1) */
+	/** Default fill opacity for series area (0..1). When the legend item has `fillOpacity`, it takes precedence. */
 	fillOpacity?: number;
 	/** Square SVG viewport size in px (it will scale responsively) */
 	size?: number;

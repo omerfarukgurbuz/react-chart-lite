@@ -2,14 +2,14 @@ import stylesV from '@/components/ui/VerticalBarChart/VerticalBarChart.module.cs
 import type { CategoryGridProps } from './CategoryGrid.types';
 import { classNames } from '@/utils/classNames';
 
-export function CategoryGrid({ show, categoryCount, categorySpacing, apsis, ordinat }: CategoryGridProps) {
+export function CategoryGrid({ show, categoryCount, categorySpacing, showBaselineAxis, showLeftAxis }: CategoryGridProps) {
 	if (!show) return null;
 	return (
 		<div
 			className={classNames(
 				stylesV.chart__vgrid,
-				apsis && stylesV['chart__vgrid--apsis'],
-				ordinat && stylesV['chart__vgrid--ordinat']
+				showBaselineAxis && stylesV['chart__vgrid--apsis'],
+				showLeftAxis && stylesV['chart__vgrid--ordinat']
 			)}
 			aria-hidden="true"
 			style={{ gap: `${categorySpacing}px` }}

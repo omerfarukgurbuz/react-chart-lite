@@ -136,6 +136,7 @@ const renderLineLayer = (
               fill="none"
               strokeDasharray={series.dashed ? '6 4' : undefined}
               className={!unstyled && isDimmed ? styles['chart__line--dimmed'] : undefined}
+              aria-hidden="true"
             />
             {showLinePoints && points.map((p, idx) => {
               const categoryLabel = data[idx]?.category ?? `${idx + 1}`;
@@ -294,8 +295,8 @@ function VerticalBarChart({
   lineWidth = 2,
   showLinePoints = true,
   linePointRadius = 4,
-  apsis = true,
-  ordinat = true,
+  showBaselineAxis,
+  showLeftAxis,
   showTooltip = false,
   unstyled = false,
   style,
@@ -303,9 +304,9 @@ function VerticalBarChart({
 }: VerticalBarChartProps) {
   // ==================== HOOKS & STATE ====================
   
-  // Aliases for readability
-  const showBaselineAxis = apsis;
-  const showLeftAxis = ordinat;
+  // Resolve standardized axis props
+  const showBaselineAxisResolved = (showBaselineAxis ?? true);
+  const showLeftAxisResolved = (showLeftAxis ?? true);
 
   const reactId = useId();
   const chartId = id ?? reactId;
@@ -403,7 +404,7 @@ function VerticalBarChart({
       <div className={unstyled ? classes?.container : classNames(styles.chart__container, classes?.container)}>
         <div className={unstyled ? classes?.body : classNames(styles.chart__body, classes?.body)}>
           <ValueGrid variant="verticalBar" orientation="horizontal" show={showGrid && showValueGrid} gridLines={gridLines} formatter={calculatedScale.formatter} />
-          <CategoryGrid show={showGrid && showCategoryGrid} categoryCount={data.length} categorySpacing={categorySpacing} apsis={showBaselineAxis} ordinat={showLeftAxis} />
+          <CategoryGrid show={showGrid && showCategoryGrid} categoryCount={data.length} categorySpacing={categorySpacing} showBaselineAxis={showBaselineAxisResolved} showLeftAxis={showLeftAxisResolved} />
 
           <div
             ref={columnsRef}

@@ -169,8 +169,8 @@ function HorizontalBarChart({
   showGrid = true,
   showValueGrid = true,
   gridLineVariant = 'dashed',
-  apsis = true,
-  ordinat = true,
+  showBaselineAxis,
+  showLeftAxis,
   showValues = false,
   animated = true,
   animationDuration = 500,
@@ -216,6 +216,8 @@ function HorizontalBarChart({
 
   // Memoize container classes to prevent unnecessary re-renders
   const containerClasses = useMemo(() => {
+    const showBaseline = showBaselineAxis ?? true;
+    const showLeft = showLeftAxis ?? true;
     return unstyled
       ? classNames(
           className,
@@ -225,12 +227,12 @@ function HorizontalBarChart({
           styles.chart,
           animated && styles['chart--animated'],
           gridVariantClass,
-          !apsis && styles['chart--no-apsis'],
-          ordinat && styles['chart--ordinat'],
+          !showBaseline && styles['chart--no-apsis'],
+          showLeft && styles['chart--ordinat'],
           className,
           classes?.root
         );
-  }, [unstyled, className, classes?.root, animated, gridVariantClass, showGrid, apsis, ordinat]);
+  }, [unstyled, className, classes?.root, animated, gridVariantClass, showGrid, showBaselineAxis, showLeftAxis]);
 
   // Unified tooltip handlers using data-tooltip
   const handleEnterOrMove = useCallback((evt: React.MouseEvent<HTMLElement>) => {

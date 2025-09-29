@@ -225,8 +225,7 @@ function App() {
               subtitle="Revenue vs Cost vs Returns with multiple trend lines"
               showLegend
               showGrid
-              showVerticalGrid
-              showHorizontalGrid
+              showValueGrid
               gridLineVariant="dashed"
               showLine
               lineSeries={testLineSeries}
@@ -235,8 +234,8 @@ function App() {
               linePointRadius={3}
               chartHeight={420}
               showTooltip
-              apsis
-              ordinat
+              showBaselineAxis
+              showLeftAxis
             />
           </div>
         </Section>
@@ -255,8 +254,7 @@ function App() {
           title="Aylık Satış"
           showLegend
           showGrid
-          showVerticalGrid
-          showHorizontalGrid
+          showValueGrid
           showTooltip
           chartHeight={320}
         />
@@ -269,7 +267,7 @@ function App() {
           title="Satış vs Hedef + Ortalama"
           showLegend
           showGrid
-          showVerticalGrid
+          showValueGrid
           gridLineVariant="dashed"
           showTooltip
           chartHeight={340}
@@ -291,7 +289,7 @@ function App() {
           title="Satış (Detay)"
           showLegend={false}
           showGrid
-          showVerticalGrid
+          showValueGrid
           barSpacing={6}
           categorySpacing={8}
           showValues
@@ -519,8 +517,7 @@ function App() {
                   title="Vertical"
                   showLegend
                   showGrid
-                  showVerticalGrid
-                  showHorizontalGrid
+                  showValueGrid
                   chartHeight={280}
                   showTooltip
                 />
@@ -548,7 +545,7 @@ function App() {
                   title="Line Only – Two Series"
                   showLegend
                   showGrid
-                  showVerticalGrid
+                  showValueGrid
                   gridLineVariant="dashed"
                   chartHeight={280}
                   showLine

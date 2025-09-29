@@ -143,8 +143,9 @@ A horizontal bar chart component for comparing values across categories.
 | `barSpacing` | `number` | `2` | Space between bars in same category |
 | `categorySpacing` | `number` | `8` | Space between categories |
 | `showGrid` | `boolean` | `true` | Show grid lines |
-| `showVerticalGrid` | `boolean` | `true` | Show vertical grid lines |
-| `showHorizontalGrid` | `boolean` | `false` | Show horizontal grid lines |
+| `showValueGrid` | `boolean` | `true` | Show value grid lines (vertical) |
+| `showBaselineAxis` | `boolean` | `true` | Show baseline axis (bottom) |
+| `showLeftAxis` | `boolean` | `true` | Show left axis |
 | `gridLineVariant` | `'solid' \| 'dashed' \| 'dotted'` | `'dashed'` | Grid line style |
 | `showValues` | `boolean` | `false` | Display values on bars |
 | `animated` | `boolean` | `true` | Enable animations |
@@ -199,6 +200,10 @@ Includes all `HorizontalBarChart` props plus:
 | `lineWidth` | `number` | `2` | Line stroke width |
 | `showLinePoints` | `boolean` | `true` | Show points on lines |
 | `linePointRadius` | `number` | `4` | Line point radius |
+| `showBaselineAxis` | `boolean` | `true` | Show baseline axis (bottom) |
+| `showLeftAxis` | `boolean` | `true` | Show left axis |
+| `showValueGrid` | `boolean` | `true` | Show value grid lines (horizontal) |
+| `showCategoryGrid` | `boolean` | `false` | Show category columns |
 
 **Additional Types:**
 
@@ -264,7 +269,7 @@ A radar/spider chart for multi-dimensional data visualization.
 | `gridLineVariant` | `'solid' \| 'dashed' \| 'dotted'` | `'dashed'` | Grid line style |
 | `dotRadius` | `number` | `3` | Data point radius |
 | `strokeWidth` | `number` | `2` | Line stroke width |
-| `fillOpacity` | `number` | `0.15` | Default fill opacity |
+| `fillOpacity` | `number` | `0.15` | Default fill opacity (overridden by legend's `fillOpacity` when provided) |
 | `showLegend` | `boolean` | `true` | Display legend |
 | `showTooltip` | `boolean` | `false` | Enable tooltips |
 | `unstyled` | `boolean` | `false` | Disable default styling |
@@ -292,6 +297,21 @@ interface RadarChartScale {
   formatter?: (value: number) => string;
 }
 ```
+
+### Bar Charts: Shared Props
+
+Both `<HorizontalBarChart />` and `<VerticalBarChart />` share a common set of props:
+
+- `legends`, `scale`, `title`, `subtitle`, `iconSrc`, `showLegend`
+- `barSpacing`, `categorySpacing`
+- `showGrid`, `showValueGrid`, `gridLineVariant`
+- `showValues`, `animated`, `animationDuration`
+- `showBaselineAxis`, `showLeftAxis`
+- `className`, `style`, `id`, `showTooltip`, `unstyled`, `classes`
+
+Notes:
+- Axis names are standardized as `showBaselineAxis` (formerly `apsis`) and `showLeftAxis` (formerly `ordinat`).
+- Radar and Pie use a unified `size` prop for square viewBox sizing.
 
 ---
 
