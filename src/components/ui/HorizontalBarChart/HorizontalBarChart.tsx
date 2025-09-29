@@ -7,12 +7,9 @@ import { ValueGrid } from '../shared/chart/parts/ValueGrid';
 import styles from './HorizontalBarChart.module.css';
 import type { HorizontalBarChartProps, ChartBar } from './HorizontalBarChart.types';
 import { useBarChartCore } from '../shared/bar/useBarChartCore';
+import { classNames } from '@/utils/classNames';
 
-/**
- * Utility function to merge class names and filter out falsy values
- */
-const classNames = (...classes: Array<string | false | undefined>): string => 
-  classes.filter(Boolean).join(' ');
+/** classNames moved to '@/utils/classNames' */
 
 /**
  * Calculates the width percentage of a bar based on its value and scale

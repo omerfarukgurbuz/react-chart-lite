@@ -1,9 +1,6 @@
 import stylesV from '@/components/ui/VerticalBarChart/VerticalBarChart.module.css';
 import type { CategoryGridProps } from './CategoryGrid.types';
-
-function classNames(...classes: Array<string | false | undefined>): string {
-	return classes.filter(Boolean).join(' ');
-}
+import { classNames } from '@/utils/classNames';
 
 export function CategoryGrid({ show, categoryCount, categorySpacing, apsis, ordinat }: CategoryGridProps) {
 	if (!show) return null;

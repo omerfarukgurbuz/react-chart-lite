@@ -9,9 +9,9 @@ import { RadarAxes } from '../shared/chart/parts/RadarAxes';
 import styles from './RadarChart.module.css';
 import type { RadarChartProps, RadarChartScale, RadarChartSeries, ChartLegendItem } from './RadarChart.types';
 import { polarToCartesian, buildPolygonPath } from '@/utils/geometry';
+import { classNames } from '@/utils/classNames';
 
-// Merge class names utility
-const classNames = (...classes: Array<string | false | undefined>): string => classes.filter(Boolean).join(' ');
+// classNames moved to '@/utils/classNames'
 
 // Compute scale if not provided
 const inferScale = (series: RadarChartSeries[], provided?: RadarChartScale): RadarChartScale => {
