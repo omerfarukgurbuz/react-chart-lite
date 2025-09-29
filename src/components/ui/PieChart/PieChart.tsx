@@ -7,15 +7,14 @@ import { Legend as SharedLegend } from '../shared/chart/parts/Legend';
 import styles from './PieChart.module.css';
 import type { PieChartProps, ChartLegendItem } from './PieChart.types';
 import { polarToCartesian, buildArcPath, roundTo } from '@/utils/geometry';
+import { classNames } from '@/utils/classNames';
 
-// Merge class names utility
-const classNames = (...classes: Array<string | false | undefined>): string =>
-  classes.filter(Boolean).join(' ');
+// classNames moved to '@/utils/classNames'
 
 /**
  * PieChart: interactive pie/donut chart with legend and tooltips
  */
-export default function PieChart({
+function PieChart({
   data,
   legends,
   title,
@@ -185,3 +184,5 @@ export default function PieChart({
     </div>
   );
 }
+
+export default React.memo(PieChart);

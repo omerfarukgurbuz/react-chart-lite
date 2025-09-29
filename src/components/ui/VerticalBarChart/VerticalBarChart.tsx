@@ -17,12 +17,11 @@ import type {
 import { useTooltip } from '@/hooks/useTooltip';
 import { calculateNiceScale as calcNiceScale } from '@/utils/scale';
 import { useBarChartCore } from '../shared/bar/useBarChartCore';
+import { classNames } from '@/utils/classNames';
 
 // ==================== UTILITY FUNCTIONS ====================
 
-/** Merge CSS class names */
-const classNames = (...classes: Array<string | false | undefined>): string => 
-  classes.filter(Boolean).join(' ');
+/** classNames moved to '@/utils/classNames' */
 
 /** Shallow object comparison */
 const shallowEqual = (obj1: unknown, obj2: unknown): boolean => {
@@ -298,7 +297,7 @@ const renderXLabels = (
 
 // ==================== MAIN COMPONENT ====================
 
-export default function VerticalBarChart({
+function VerticalBarChart({
   data,
   legends,
   scale,
@@ -518,6 +517,8 @@ export const shouldChartRerender = (
     !shallowEqual(prevProps.legends, newProps.legends)
   );
 };
+
+export default React.memo(VerticalBarChart, (prev, next) => !shouldChartRerender(prev, next));
 
 // ==================== OPTIONAL UTILITIES  ====================
 

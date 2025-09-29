@@ -42,6 +42,7 @@
     "react-dom": "^18 || ^19"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "@types/react": "^19.1.12",
     "@types/react-dom": "^19.1.9",
     "tsc-alias": "^1.8.16",
@@ -52,7 +53,13 @@
     "clean": "rm -rf dist",
     "prepublishOnly": "npm run build",
     "copycss": "node scripts/copy-scss.cjs",
-    "stripmaps": "find dist -type f -name \"*.map\" -delete"
+    "stripmaps": "find dist -type f -name \"*.map\" -delete",
+    "type-check": "tsc --noEmit",
+    "test": "echo \"No tests yet\" && exit 0",
+    "dev:examples": "npm --prefix examples/demo-vite run dev",
+    "dev:example:local": "cross-env RCL_LOCAL=1 npm --prefix examples/demo-vite run dev",
+    "dev:example:package": "cross-env RCL_LOCAL=0 npm --prefix examples/demo-vite run dev",
+    "setup:examples": "npm --prefix examples/demo-vite install"
   },
   "exports": {
     ".": {
