@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0] - 2025-09-29
+
+### Changed
+- Release version bumped to 2.0.0 to mark a new stable line. No API changes from the latest 1.x.
+
 ### Added
 - Initial release of react-chart-lite
 - HorizontalBarChart component with full customization support
