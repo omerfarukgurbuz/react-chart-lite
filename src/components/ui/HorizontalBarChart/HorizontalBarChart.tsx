@@ -11,18 +11,7 @@ import { classNames } from '@/utils/classNames';
 
 /** classNames moved to '@/utils/classNames' */
 
-/**
- * Calculates the width percentage of a bar based on its value and scale
- */
-const calculateBarWidth = (
-  value: number, 
-  min: number, 
-  max: number
-): number => {
-  const range = max - min || 1;
-  const normalizedValue = (value - min) / range;
-  return Math.max(0, Math.min(100, normalizedValue * 100));
-};
+// width percentage is now provided by useBarChartCore.getValuePercentage
 
 /**
  * Creates inline styles for animated and non-animated bars
@@ -73,8 +62,10 @@ const BarComponent: React.FC<{
   unstyled: boolean;
   classes?: any;
   onBarClick?: (bar: ChartBar, categoryIndex: number, barIndex: number) => void;
-  onShowTooltip: (evt: React.MouseEvent, content: string) => void;
-  onHideTooltip: () => void;
+  onEnterOrMove: (evt: React.MouseEvent<HTMLElement>) => void;
+  onLeave: () => void;
+  onFocus: (evt: React.FocusEvent<HTMLElement>) => void;
+  onBlur: () => void;
 }> = ({
   bar,
   categoryIndex,
@@ -94,8 +85,10 @@ const BarComponent: React.FC<{
   unstyled,
   classes,
   onBarClick,
-  onShowTooltip,
-  onHideTooltip,
+  onEnterOrMove,
+  onLeave,
+  onFocus,
+  onBlur,
 }) => {
   const barStyle = createBarStyles(
     width,
@@ -112,14 +105,6 @@ const BarComponent: React.FC<{
   const handleClick = useCallback(() => {
     onBarClick?.(bar, categoryIndex, barIndex);
   }, [bar, categoryIndex, barIndex, onBarClick]);
-
-  const handleMouseEnter = useCallback((e: React.MouseEvent) => {
-    onShowTooltip(e, titleText);
-  }, [onShowTooltip, titleText]);
-
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    onShowTooltip(e, titleText);
-  }, [onShowTooltip, titleText]);
 
   return (
     <div
@@ -140,11 +125,14 @@ const BarComponent: React.FC<{
         }
         style={barStyle}
         onClick={handleClick}
-        onMouseEnter={handleMouseEnter}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={onHideTooltip}
+        onMouseEnter={onEnterOrMove}
+        onMouseMove={onEnterOrMove}
+        onMouseLeave={onLeave}
+        onFocus={onFocus}
+        onBlur={onBlur}
         aria-label={ariaLabel}
         title={showTooltip ? undefined : titleText}
+        data-tooltip={titleText}
         type="button"
       >
         {showValues && (
@@ -179,10 +167,10 @@ function HorizontalBarChart({
   barSpacing = 2,
   categorySpacing = 8,
   showGrid = true,
-  showVerticalGrid = true,
+  showValueGrid = true,
   gridLineVariant = 'dashed',
-  apsis = true,
-  ordinat = true,
+  showBaselineAxis,
+  showLeftAxis,
   showValues = false,
   animated = true,
   animationDuration = 500,
@@ -202,6 +190,7 @@ function HorizontalBarChart({
     legendMap, 
     calculatedScale, 
     gridLines, 
+    getValuePercentage,
     tooltip, 
     bodyRef, 
     hoveredLegendId, 
@@ -227,6 +216,8 @@ function HorizontalBarChart({
 
   // Memoize container classes to prevent unnecessary re-renders
   const containerClasses = useMemo(() => {
+    const showBaseline = showBaselineAxis ?? true;
+    const showLeft = showLeftAxis ?? true;
     return unstyled
       ? classNames(
           className,
@@ -236,19 +227,35 @@ function HorizontalBarChart({
           styles.chart,
           animated && styles['chart--animated'],
           gridVariantClass,
-          !apsis && styles['chart--no-apsis'],
-          ordinat && styles['chart--ordinat'],
+          !showBaseline && styles['chart--no-apsis'],
+          showLeft && styles['chart--ordinat'],
           className,
           classes?.root
         );
-  }, [unstyled, className, classes?.root, animated, gridVariantClass, showGrid, apsis, ordinat]);
+  }, [unstyled, className, classes?.root, animated, gridVariantClass, showGrid, showBaselineAxis, showLeftAxis]);
 
-  // Tooltip event handlers
-  const handleShowTooltip = useCallback((evt: React.MouseEvent, content: string) => {
-    tooltip.showAtEvent(evt, content, bodyRef.current);
+  // Unified tooltip handlers using data-tooltip
+  const handleEnterOrMove = useCallback((evt: React.MouseEvent<HTMLElement>) => {
+    const el = evt.currentTarget as Element;
+    const content = el.getAttribute('data-tooltip') || '';
+    if (content) {
+      tooltip.showAtEvent(evt as unknown as React.MouseEvent, content, bodyRef.current);
+    }
   }, [tooltip, bodyRef]);
 
-  const handleHideTooltip = useCallback(() => {
+  const handleLeave = useCallback(() => {
+    tooltip.hide();
+  }, [tooltip]);
+
+  const handleFocus = useCallback((evt: React.FocusEvent<HTMLElement>) => {
+    const el = evt.currentTarget as Element;
+    const content = el.getAttribute('data-tooltip') || '';
+    if (content) {
+      tooltip.showAtElement(el, content, bodyRef.current);
+    }
+  }, [tooltip, bodyRef]);
+
+  const handleBlur = useCallback(() => {
     tooltip.hide();
   }, [tooltip]);
 
@@ -265,12 +272,12 @@ function HorizontalBarChart({
       <div className={unstyled ? classes?.container : classNames(styles.chart__container, classes?.container)}>
         <div className={unstyled ? classes?.body : classNames(styles.chart__body, classes?.body)} ref={bodyRef}>
           {/* Background grid lines */}
-          <ValueGrid 
-            variant="horizontalBar" 
-            orientation="vertical" 
-            show={showGrid && showVerticalGrid} 
-            gridLines={gridLines} 
-            formatter={calculatedScale.formatter} 
+          <ValueGrid
+            variant="horizontalBar"
+            orientation="vertical"
+            show={showGrid && showValueGrid}
+            gridLines={gridLines}
+            formatter={calculatedScale.formatter}
           />
 
           {/* Chart data rows */}
@@ -291,7 +298,7 @@ function HorizontalBarChart({
                   {item.bars.map((bar, barIndex) => {
                     const legend = legendMap.get(bar.legendId);
                     const color = legend?.color || '#999999';
-                    const width = calculateBarWidth(bar.value, calculatedScale.min, calculatedScale.max);
+                    const width = getValuePercentage(bar.value);
                     const ariaLabel = legend 
                       ? `${item.category} - ${legend.label}: ${bar.value}` 
                       : `${item.category}: ${bar.value}`;
@@ -299,31 +306,33 @@ function HorizontalBarChart({
                     const isDimmed = hoveredLegendId !== null && bar.legendId !== hoveredLegendId;
                     const isLastBar = barIndex === item.bars.length - 1;
 
-                    return (
-                      <BarComponent
-                        key={`bar-${categoryIndex}-${barIndex}`}
-                        bar={bar}
-                        categoryIndex={categoryIndex}
-                        barIndex={barIndex}
-                        isLastBar={isLastBar}
-                        barHeight={barHeight}
-                        barSpacing={barSpacing}
-                        color={color}
-                        width={width}
-                        ariaLabel={ariaLabel}
-                        titleText={titleText}
-                        isDimmed={isDimmed}
-                        animated={animated}
-                        animationDuration={animationDuration}
-                        showValues={showValues}
-                        showTooltip={showTooltip}
-                        unstyled={unstyled}
-                        classes={classes}
-                        onBarClick={onBarClick}
-                        onShowTooltip={handleShowTooltip}
-                        onHideTooltip={handleHideTooltip}
-                      />
-                    );
+                      return (
+                        <BarComponent
+                          key={`bar-${categoryIndex}-${barIndex}`}
+                          bar={bar}
+                          categoryIndex={categoryIndex}
+                          barIndex={barIndex}
+                          isLastBar={isLastBar}
+                          barHeight={barHeight}
+                          barSpacing={barSpacing}
+                          color={color}
+                          width={width}
+                          ariaLabel={ariaLabel}
+                          titleText={titleText}
+                          isDimmed={isDimmed}
+                          animated={animated}
+                          animationDuration={animationDuration}
+                          showValues={showValues}
+                          showTooltip={showTooltip}
+                          unstyled={unstyled}
+                          classes={classes}
+                          onBarClick={onBarClick}
+                          onEnterOrMove={handleEnterOrMove}
+                          onLeave={handleLeave}
+                          onFocus={handleFocus}
+                          onBlur={handleBlur}
+                        />
+                      );
                   })}
                 </div>
               </div>

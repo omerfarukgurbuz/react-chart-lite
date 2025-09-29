@@ -3,7 +3,7 @@
 /**
  * Client component for interactive vertical bar chart.
  */
-import React, { useRef, useEffect, useId, useState, useMemo } from 'react';
+import React, { useRef, useEffect, useId, useState, useMemo, useCallback } from 'react';
 import { ChartHeader } from '../shared/chart/parts/ChartHeader';
 import { Legend as SharedLegend } from '../shared/chart/parts/Legend';
 import { ValueGrid } from '../shared/chart/parts/ValueGrid';
@@ -15,7 +15,6 @@ import type {
   ChartLegendItem,
 } from './VerticalBarChart.types';
 import { useTooltip } from '@/hooks/useTooltip';
-import { calculateNiceScale as calcNiceScale } from '@/utils/scale';
 import { useBarChartCore } from '../shared/bar/useBarChartCore';
 import { classNames } from '@/utils/classNames';
 
@@ -43,29 +42,7 @@ const shallowEqual = (obj1: unknown, obj2: unknown): boolean => {
 };
 
 // ==================== SCALE CALCULATION FUNCTIONS ====================
-
-// kept for line layer height mapping
-const calculateScale = (
-  data: VerticalBarChartProps['data'],
-  lineSeries: NonNullable<VerticalBarChartProps['lineSeries']>,
-  scale?: VerticalBarChartProps['scale']
-) => {
-  if (scale) return { ...scale };
-
-  const barValues = data.flatMap(item => item.bars.map(bar => bar.value));
-  const lineValues = lineSeries.flatMap(s => s.values);
-  const s = calcNiceScale([...barValues, ...lineValues], undefined, { minBase: 0, intervals: 5 });
-  return s;
-};
-
-const getBarHeight = (
-  value: number,
-  scale: ReturnType<typeof calculateScale>
-): number => {
-  const { min, max } = scale;
-  const percentage = ((value - min) / (max - min || 1)) * 100;
-  return Math.max(0, Math.min(100, percentage));
-};
+// Height/position now derive from shared getValuePercentage from useBarChartCore
 
 // ==================== GEOMETRY CALCULATION FUNCTIONS ====================
 
@@ -81,9 +58,9 @@ const computeGroupWidth = (
 const createValueToY = (
   chartHeight: number,
   dpr: number,
-  scale: ReturnType<typeof calculateScale>
+  getValuePercentage: (value: number) => number
 ) => (value: number): number => {
-  const pct = getBarHeight(value, scale) / 100;
+  const pct = getValuePercentage(value) / 100;
   return (1 - pct) * chartHeight * dpr;
 };
 
@@ -105,27 +82,21 @@ const renderLineLayer = (
   chartHeight: number,
   data: VerticalBarChartProps['data'],
   categorySpacing: number,
-  calculatedScale: ReturnType<typeof calculateScale>,
+  getValuePercentage: (value: number) => number,
   lineWidth: number,
   showLinePoints: boolean,
   linePointRadius: number,
   legendMap: Map<string, ChartLegendItem>,
   hoveredLegendId: string | null,
   showTooltip: boolean,
-  tooltip: ReturnType<typeof useTooltip>,
-  bodyEl: HTMLDivElement | null,
+  onEnterOrMove: (evt: React.MouseEvent<SVGElement>) => void,
+  onLeave: () => void,
+  onFocus: (evt: React.FocusEvent<SVGElement>) => void,
+  onBlur: () => void,
   unstyled: boolean,
   classes: VerticalBarChartProps['classes']
 ): React.ReactElement | null => {
   if (!showLine || !lineSeries || lineSeries.length === 0) return null;
-
-  const showTooltipAt = (evt: React.MouseEvent, content: string) => {
-    tooltip.showAtEvent(evt, content, bodyEl);
-  };
-
-  const hideTooltip = () => {
-    tooltip.hide();
-  };
 
   return (
     <svg
@@ -138,7 +109,7 @@ const renderLineLayer = (
       {lineSeries.map((series, sIdx) => {
         const totalCategories = data.length;
         const groupWidth = computeGroupWidth(containerWidth, totalCategories, categorySpacing);
-        const valueToY = createValueToY(chartHeight, 1, calculatedScale);
+        const valueToY = createValueToY(chartHeight, 1, getValuePercentage);
         const categoryCenterX = createCategoryCenterX(groupWidth, categorySpacing, 1);
 
         const points = series.values
@@ -152,7 +123,7 @@ const renderLineLayer = (
           acc + (i === 0 ? `M ${p.x} ${p.y}` : ` L ${p.x} ${p.y}`)
         ), '');
 
-        const legend = (legendMap as Map<string, { id: string; label: string; color: string }>).get(series.legendId);
+        const legend = legendMap.get(series.legendId);
         const strokeColor = legend?.color || '#888888';
         const isDimmed = hoveredLegendId !== null && series.legendId !== hoveredLegendId;
 
@@ -165,6 +136,7 @@ const renderLineLayer = (
               fill="none"
               strokeDasharray={series.dashed ? '6 4' : undefined}
               className={!unstyled && isDimmed ? styles['chart__line--dimmed'] : undefined}
+              aria-hidden="true"
             />
             {showLinePoints && points.map((p, idx) => {
               const categoryLabel = data[idx]?.category ?? `${idx + 1}`;
@@ -180,10 +152,13 @@ const renderLineLayer = (
                   r={Math.max(1, linePointRadius)}
                   fill={strokeColor}
                   className={!unstyled && isDimmed ? styles['chart__dot--dimmed'] : undefined}
-                  onMouseEnter={(e) => showTooltipAt(e, titleText)}
-                  onMouseMove={(e) => showTooltipAt(e, titleText)}
-                  onMouseLeave={hideTooltip}
+                  data-tooltip={titleText}
                   aria-label={titleText}
+                  onMouseEnter={onEnterOrMove}
+                  onMouseMove={onEnterOrMove}
+                  onMouseLeave={onLeave}
+                  onFocus={onFocus}
+                  onBlur={onBlur}
                 >
                   {!showTooltip && <title>{titleText}</title>}
                 </circle>
@@ -199,7 +174,7 @@ const renderLineLayer = (
 const renderBars = (
   data: VerticalBarChartProps['data'],
   barSpacing: number,
-  calculatedScale: ReturnType<typeof calculateScale>,
+  getValuePercentage: (value: number) => number,
   showValues: boolean,
   animated: boolean,
   animationDuration: number,
@@ -207,8 +182,10 @@ const renderBars = (
   onBarClick: VerticalBarChartProps['onBarClick'] | undefined,
   hoveredLegendId: string | null,
   showTooltip: boolean,
-  tooltip: ReturnType<typeof useTooltip>,
-  bodyEl: HTMLDivElement | null,
+  onEnterOrMove: (evt: React.MouseEvent<HTMLButtonElement>) => void,
+  onLeave: () => void,
+  onFocus: (evt: React.FocusEvent<HTMLButtonElement>) => void,
+  onBlur: () => void,
   unstyled: boolean,
   classes: VerticalBarChartProps['classes']
 ): React.ReactElement[] => (
@@ -220,8 +197,8 @@ const renderBars = (
       aria-label={item.category}
     >
       {item.bars.map((bar, barIndex) => {
-        const height = getBarHeight(bar.value, calculatedScale);
-        const legend = (legendMap as Map<string, { id: string; label: string; color: string }>).get(bar.legendId);
+        const height = getValuePercentage(bar.value);
+        const legend = (legendMap as Map<string, ChartLegendItem>).get(bar.legendId);
         const color = legend?.color || '#999999';
 
         const baseStyle: React.CSSProperties & {
@@ -242,14 +219,6 @@ const renderBars = (
         const titleText = bar.tooltip || ariaLabel;
         const isDimmed = hoveredLegendId !== null && bar.legendId !== hoveredLegendId;
 
-        const showTooltipAt = (evt: React.MouseEvent, content: string) => {
-          tooltip.showAtEvent(evt, content, bodyEl);
-        };
-
-        const hideTooltip = () => {
-          tooltip.hide();
-        };
-
         return (
           <button
             key={barIndex}
@@ -262,10 +231,13 @@ const renderBars = (
             onClick={() => onBarClick?.(bar, categoryIndex, barIndex)}
             aria-label={ariaLabel}
             title={showTooltip ? undefined : titleText}
+            data-tooltip={titleText}
             type="button"
-            onMouseEnter={(e) => showTooltipAt(e, titleText)}
-            onMouseMove={(e) => showTooltipAt(e, titleText)}
-            onMouseLeave={hideTooltip}
+            onMouseEnter={onEnterOrMove}
+            onMouseMove={onEnterOrMove}
+            onMouseLeave={onLeave}
+            onFocus={onFocus}
+            onBlur={onBlur}
           >
             {showValues && (
               <span className={unstyled ? classes?.barValue : classNames(styles['chart__bar-value'], classes?.barValue)}>{bar.value}</span>
@@ -308,8 +280,8 @@ function VerticalBarChart({
   barSpacing = 2,
   categorySpacing = 8,
   showGrid = true,
-  showHorizontalGrid = true,
-  showVerticalGrid = false,
+  showValueGrid = true,
+  showCategoryGrid = false,
   gridLineVariant = 'dashed',
   showValues = false,
   animated = true,
@@ -323,8 +295,8 @@ function VerticalBarChart({
   lineWidth = 2,
   showLinePoints = true,
   linePointRadius = 4,
-  apsis = true,
-  ordinat = true,
+  showBaselineAxis,
+  showLeftAxis,
   showTooltip = false,
   unstyled = false,
   style,
@@ -332,15 +304,15 @@ function VerticalBarChart({
 }: VerticalBarChartProps) {
   // ==================== HOOKS & STATE ====================
   
-  // Aliases for readability
-  const showBaselineAxis = apsis;
-  const showLeftAxis = ordinat;
+  // Resolve standardized axis props
+  const showBaselineAxisResolved = (showBaselineAxis ?? true);
+  const showLeftAxisResolved = (showLeftAxis ?? true);
 
   const reactId = useId();
   const chartId = id ?? reactId;
   const columnsRef = useRef<HTMLDivElement | null>(null);
   const [containerWidth, setContainerWidth] = useState(0);
-  const { legendMap, calculatedScale, gridLines, tooltip, hoveredLegendId, onLegendEnter, onLegendLeave, barLegends } = useBarChartCore({
+  const { legendMap, calculatedScale, gridLines, tooltip, hoveredLegendId, onLegendEnter, onLegendLeave, barLegends, getValuePercentage } = useBarChartCore({
     data,
     legends,
     scale,
@@ -388,14 +360,51 @@ function VerticalBarChart({
     };
   }, []);
 
+  // Unified tooltip handlers using data-tooltip (for buttons and svg circles)
+  const handleEnterOrMoveBtn = useCallback((evt: React.MouseEvent<HTMLButtonElement>) => {
+    const el = evt.currentTarget as Element;
+    const content = el.getAttribute('data-tooltip') || '';
+    if (content) {
+      tooltip.showAtEvent(evt as unknown as React.MouseEvent, content, columnsRef.current);
+    }
+  }, [tooltip]);
+
+  const handleEnterOrMoveSvg = useCallback((evt: React.MouseEvent<SVGElement>) => {
+    const el = evt.currentTarget as Element;
+    const content = el.getAttribute('data-tooltip') || '';
+    if (content) {
+      tooltip.showAtEvent(evt as unknown as React.MouseEvent, content, columnsRef.current);
+    }
+  }, [tooltip]);
+
+  const handleLeave = useCallback(() => { tooltip.hide(); }, [tooltip]);
+
+  const handleFocusBtn = useCallback((evt: React.FocusEvent<HTMLButtonElement>) => {
+    const el = evt.currentTarget as Element;
+    const content = el.getAttribute('data-tooltip') || '';
+    if (content) {
+      tooltip.showAtElement(el, content, columnsRef.current);
+    }
+  }, [tooltip]);
+
+  const handleFocusSvg = useCallback((evt: React.FocusEvent<SVGElement>) => {
+    const el = evt.currentTarget as Element;
+    const content = el.getAttribute('data-tooltip') || '';
+    if (content) {
+      tooltip.showAtElement(el, content, columnsRef.current);
+    }
+  }, [tooltip]);
+
+  const handleBlur = useCallback(() => { tooltip.hide(); }, [tooltip]);
+
   return (
     <div className={unstyled ? classNames(className, classes?.root) : containerClasses} id={chartId} style={style}>
       <ChartHeader variant="vertical" iconSrc={iconSrc} title={title} subtitle={subtitle} />
 
       <div className={unstyled ? classes?.container : classNames(styles.chart__container, classes?.container)}>
         <div className={unstyled ? classes?.body : classNames(styles.chart__body, classes?.body)}>
-          <ValueGrid variant="verticalBar" orientation="horizontal" show={showGrid && showHorizontalGrid} gridLines={gridLines} formatter={calculatedScale.formatter} />
-          <CategoryGrid show={showGrid && showVerticalGrid} categoryCount={data.length} categorySpacing={categorySpacing} apsis={showBaselineAxis} ordinat={showLeftAxis} />
+          <ValueGrid variant="verticalBar" orientation="horizontal" show={showGrid && showValueGrid} gridLines={gridLines} formatter={calculatedScale.formatter} />
+          <CategoryGrid show={showGrid && showCategoryGrid} categoryCount={data.length} categorySpacing={categorySpacing} showBaselineAxis={showBaselineAxisResolved} showLeftAxis={showLeftAxisResolved} />
 
           <div
             ref={columnsRef}
@@ -405,7 +414,7 @@ function VerticalBarChart({
             {renderBars(
               data,
               barSpacing,
-              calculatedScale,
+              getValuePercentage,
               showValues,
               animated,
               animationDuration,
@@ -413,8 +422,10 @@ function VerticalBarChart({
               onBarClick,
               hoveredLegendId,
               showTooltip,
-              tooltip,
-              columnsRef.current,
+              handleEnterOrMoveBtn,
+              handleLeave,
+              handleFocusBtn,
+              handleBlur,
               unstyled,
               classes
             )}
@@ -425,15 +436,17 @@ function VerticalBarChart({
               chartHeight,
               data,
               categorySpacing,
-              calculatedScale,
+              getValuePercentage,
               lineWidth,
               showLinePoints,
               linePointRadius,
               legendMap,
               hoveredLegendId,
               showTooltip,
-              tooltip,
-              columnsRef.current,
+              handleEnterOrMoveSvg,
+              handleLeave,
+              handleFocusSvg,
+              handleBlur,
               unstyled,
               classes
             )}
@@ -453,7 +466,7 @@ function VerticalBarChart({
         show={showLegend}
         items={barLegends}
         lineItems={lineSeries}
-        legendMap={legendMap as unknown as Map<string, { id: string; label: string; color: string }>}
+        legendMap={legendMap as unknown as Map<string, ChartLegendItem>}
         onEnter={(id) => onLegendEnter(id)}
         onLeave={() => onLegendLeave()}
       />

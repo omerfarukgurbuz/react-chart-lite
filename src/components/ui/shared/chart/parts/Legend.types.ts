@@ -1,10 +1,6 @@
 export type LegendVariant = 'vertical' | 'horizontal' | 'pie' | 'radar';
-
-export type SharedLegendItem = {
-	id: string;
-	label: string;
-	color: string;
-};
+import type { ChartLegendItem } from '@/components/ui/shared/chart/types';
+export type SharedLegendItem = ChartLegendItem;
 
 export type SharedLineLegendItem = {
 	legendId: string;

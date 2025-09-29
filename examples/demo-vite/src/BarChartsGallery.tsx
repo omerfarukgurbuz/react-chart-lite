@@ -148,41 +148,41 @@ export default function BarChartsGallery() {
   }
 
   const verticalConfigs: VCfg[] = [
-    { title: 'V1 Basic (dashed grid)', props: { data: verticalData, legends: verticalLegends, title: 'Satış & Hedef & İade', showLegend: true, showGrid: true, showHorizontalGrid: true, showTooltip: true, chartHeight: 320 } },
-    { title: 'V2 Solid Grid', props: { data: verticalData, legends: verticalLegends, gridLineVariant: 'solid', showLegend: true, showGrid: true, showHorizontalGrid: true, showTooltip: true, chartHeight: 320 } },
-    { title: 'V3 Dotted Grid', props: { data: verticalData, legends: verticalLegends, gridLineVariant: 'dotted', showLegend: true, showGrid: true, showHorizontalGrid: true, chartHeight: 320, showTooltip: true } },
+    { title: 'V1 Basic (dashed grid)', props: { data: verticalData, legends: verticalLegends, title: 'Satış & Hedef & İade', showLegend: true, showGrid: true, showValueGrid: true, showTooltip: true, chartHeight: 320 } },
+    { title: 'V2 Solid Grid', props: { data: verticalData, legends: verticalLegends, gridLineVariant: 'solid', showLegend: true, showGrid: true, showValueGrid: true, showTooltip: true, chartHeight: 320 } },
+    { title: 'V3 Dotted Grid', props: { data: verticalData, legends: verticalLegends, gridLineVariant: 'dotted', showLegend: true, showGrid: true, showValueGrid: true, chartHeight: 320, showTooltip: true } },
     { title: 'V4 Values On', props: { data: verticalData, legends: verticalLegends, showValues: true, showLegend: true, showGrid: true, chartHeight: 320, showTooltip: true } },
     { title: 'V5 Tight Bars', props: { data: verticalData, legends: verticalLegends, barSpacing: 1, categorySpacing: 6, showLegend: true, showGrid: true, chartHeight: 300, showTooltip: true } },
     { title: 'V6 Loose Bars', props: { data: verticalData, legends: verticalLegends, barSpacing: 8, categorySpacing: 14, showLegend: true, showGrid: true, chartHeight: 320, showTooltip: true } },
     { title: 'V7 Custom Scale (0..200)', props: { data: verticalData, legends: verticalLegends, scale: { min: 0, max: 200, intervals: 5 }, showLegend: true, showGrid: true, chartHeight: 340, showTooltip: true } },
-    { title: 'V8 Hide Axes (apsis=false, ordinat=false)', props: { data: verticalData, legends: verticalLegends, showLegend: true, showGrid: true, apsis: false, ordinat: false, chartHeight: 320, showTooltip: true } },
+    { title: 'V8 Hide Axes (baseline=false, left=false)', props: { data: verticalData, legends: verticalLegends, showLegend: true, showGrid: true, showBaselineAxis: false, showLeftAxis: false, chartHeight: 320, showTooltip: true } },
     { title: 'V9 ShowLine + LineSeries', props: { data: verticalData, legends: verticalLegends, showLegend: true, showGrid: true, showLine: true, lineSeries: [{ legendId: 'trend', values: [110, 130, 125, 140], dashed: false }], chartHeight: 340, showTooltip: true } },
     { title: 'V10 Line Dashed + Thick', props: { data: verticalData, legends: verticalLegends, showLegend: true, showGrid: true, showLine: true, lineWidth: 3, lineSeries: [{ legendId: 'trend', values: [100, 145, 135, 150], dashed: true }], chartHeight: 340, showTooltip: true } },
     // New: 10 categories, 3 line series
-    { title: 'V11 10 Categories + 3 Line Series', props: { data: v10Data, legends: verticalLegends, showLegend: true, showGrid: true, showHorizontalGrid: true, showLine: true, lineWidth: 2, showLinePoints: true, linePointRadius: 3, lineSeries: [
+    { title: 'V11 10 Categories + 3 Line Series', props: { data: v10Data, legends: verticalLegends, showLegend: true, showGrid: true, showValueGrid: true, showLine: true, lineWidth: 2, showLinePoints: true, linePointRadius: 3, lineSeries: [
       { legendId: 'trend', values: Array.from({ length: 10 }).map((_, i) => 70 + ((i * 9) % 90)), dashed: false },
       { legendId: 'target', values: Array.from({ length: 10 }).map((_, i) => 60 + ((i * 7) % 80)), dashed: true },
       { legendId: 'sales', values: Array.from({ length: 10 }).map((_, i) => 65 + ((i * 5) % 85)), dashed: false },
     ], chartHeight: 380, showTooltip: true } },
     // New: 10 categories, values on
-    { title: 'V12 10 Categories + Values On', props: { data: v10Data, legends: verticalLegends, showLegend: true, showGrid: true, showHorizontalGrid: true, showValues: true, chartHeight: 380, showTooltip: true } },
+    { title: 'V12 10 Categories + Values On', props: { data: v10Data, legends: verticalLegends, showLegend: true, showGrid: true, showValueGrid: true, showValues: true, chartHeight: 380, showTooltip: true } },
   ]
 
   const horizontalConfigs: HCfg[] = [
-    { title: 'H1 Basic (dashed grid)', props: { data: horizontalData, legends: horizontalLegends, title: 'Ürün Bazlı Satış', showLegend: true, showGrid: true, showTooltip: true, showVerticalGrid: true, gridLineVariant: 'dashed', apsis: true, ordinat: true } },
-    { title: 'H2 Solid Grid + Both Grids', props: { data: horizontalData, legends: horizontalLegends, showLegend: true, showGrid: true, showTooltip: true, showVerticalGrid: true, gridLineVariant: 'solid', apsis: true, ordinat: true } },
-    { title: 'H3 Dotted Grid + Row Separators', props: { data: horizontalData, legends: horizontalLegends, showLegend: true, showGrid: true, showTooltip: true, showVerticalGrid: false, gridLineVariant: 'dotted', apsis: true, ordinat: true } },
-    { title: 'H4 Values On', props: { data: horizontalData, legends: horizontalLegends, showLegend: true, showValues: true, showGrid: true, showTooltip: true, showVerticalGrid: true } },
-    { title: 'H5 Bar Height 18px', props: { data: horizontalData, legends: horizontalLegends, showLegend: true, barHeight: 18, showGrid: true, showTooltip: true, showVerticalGrid: true } },
-    { title: 'H6 Bar Height 42px', props: { data: horizontalData, legends: horizontalLegends, showLegend: true, barHeight: 42, showGrid: true, showTooltip: true, showVerticalGrid: true } },
-    { title: 'H7 Tight Categories', props: { data: horizontalData, legends: horizontalLegends, showLegend: true, categorySpacing: 4, showGrid: true, showTooltip: true, showVerticalGrid: true } },
-    { title: 'H8 Loose Categories', props: { data: horizontalData, legends: horizontalLegends, showLegend: true, categorySpacing: 16, showGrid: true, showTooltip: true, showVerticalGrid: true } },
-    { title: 'H9 Three Bars + Tooltip', props: { data: horizontalDataThreeBars, legends: horizontalLegends, showLegend: true, showGrid: true, showTooltip: true, showVerticalGrid: true } },
-    { title: 'H10 Custom Scale (0..150)', props: { data: horizontalData, legends: horizontalLegends, showLegend: true, scale: { min: 0, max: 150, intervals: 5 }, showGrid: true, showTooltip: true, showVerticalGrid: true } },
-    { title: 'H11 Hide Axes (apsis=false, ordinat=false)', props: { data: horizontalData, legends: horizontalLegends, showLegend: true, showGrid: true, showTooltip: true, showVerticalGrid: true, apsis: false, ordinat: false } },
+    { title: 'H1 Basic (dashed grid)', props: { data: horizontalData, legends: horizontalLegends, title: 'Ürün Bazlı Satış', showLegend: true, showGrid: true, showTooltip: true, showValueGrid: true, gridLineVariant: 'dashed', showBaselineAxis: true, showLeftAxis: true } },
+    { title: 'H2 Solid Grid + Both Grids', props: { data: horizontalData, legends: horizontalLegends, showLegend: true, showGrid: true, showTooltip: true, showValueGrid: true, gridLineVariant: 'solid', showBaselineAxis: true, showLeftAxis: true } },
+    { title: 'H3 Dotted Grid + Row Separators', props: { data: horizontalData, legends: horizontalLegends, showLegend: true, showGrid: true, showTooltip: true, showValueGrid: false, gridLineVariant: 'dotted', showBaselineAxis: true, showLeftAxis: true } },
+    { title: 'H4 Values On', props: { data: horizontalData, legends: horizontalLegends, showLegend: true, showValues: true, showGrid: true, showTooltip: true, showValueGrid: true } },
+    { title: 'H5 Bar Height 18px', props: { data: horizontalData, legends: horizontalLegends, showLegend: true, barHeight: 18, showGrid: true, showTooltip: true, showValueGrid: true } },
+    { title: 'H6 Bar Height 42px', props: { data: horizontalData, legends: horizontalLegends, showLegend: true, barHeight: 42, showGrid: true, showTooltip: true, showValueGrid: true } },
+    { title: 'H7 Tight Categories', props: { data: horizontalData, legends: horizontalLegends, showLegend: true, categorySpacing: 4, showGrid: true, showTooltip: true, showValueGrid: true } },
+    { title: 'H8 Loose Categories', props: { data: horizontalData, legends: horizontalLegends, showLegend: true, categorySpacing: 16, showGrid: true, showTooltip: true, showValueGrid: true } },
+    { title: 'H9 Three Bars + Tooltip', props: { data: horizontalDataThreeBars, legends: horizontalLegends, showLegend: true, showGrid: true, showTooltip: true, showValueGrid: true } },
+    { title: 'H10 Custom Scale (0..150)', props: { data: horizontalData, legends: horizontalLegends, showLegend: true, scale: { min: 0, max: 150, intervals: 5 }, showGrid: true, showTooltip: true, showValueGrid: true } },
+    { title: 'H11 Hide Axes (baseline=false, left=false)', props: { data: horizontalData, legends: horizontalLegends, showLegend: true, showGrid: true, showTooltip: true, showValueGrid: true, showBaselineAxis: false, showLeftAxis: false } },
     // New: 10 categories, 3 bars each
-    { title: 'H12 10 Categories + 3 Bars Each (values)', props: { data: h10DataThreeBars, legends: horizontalLegends, showLegend: true, showGrid: true, showVerticalGrid: true, showValues: true, gridLineVariant: 'dashed', apsis: true, ordinat: true, showTooltip: true } },
-    { title: 'H13 10 Categories Solid Grid', props: { data: h10DataThreeBars, legends: horizontalLegends, showLegend: true, showGrid: true, showVerticalGrid: true, gridLineVariant: 'solid', apsis: true, ordinat: true, showTooltip: true } },
+    { title: 'H12 10 Categories + 3 Bars Each (values)', props: { data: h10DataThreeBars, legends: horizontalLegends, showLegend: true, showGrid: true, showValueGrid: true, showValues: true, gridLineVariant: 'dashed', showBaselineAxis: true, showLeftAxis: true, showTooltip: true } },
+    { title: 'H13 10 Categories Solid Grid', props: { data: h10DataThreeBars, legends: horizontalLegends, showLegend: true, showGrid: true, showValueGrid: true, gridLineVariant: 'solid', showBaselineAxis: true, showLeftAxis: true, showTooltip: true } },
   ]
 
   return (

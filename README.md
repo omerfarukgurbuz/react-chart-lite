@@ -24,17 +24,17 @@ React Chart Lite provides a modern, minimalist approach to data visualization wi
 
 ---
 
-## ✨ Features
+## Features
 
-- **🪶 Ultra Lightweight** - Zero dependencies except React
-- **⚡ Performance First** - Optimized rendering with tree-shakable exports
-- **🎨 Fully Customizable** - CSS Modules, custom properties, and unstyled variants
-- **♿ Accessible by Design** - WCAG compliant with keyboard and screen reader support
-- **📱 Responsive** - Mobile-friendly with touch interactions
-- **🔧 TypeScript** - Full type safety with comprehensive interfaces
-- **🚀 Modern React** - Support for React 18/19 with client-side rendering
+- **Ultra Lightweight** - Zero dependencies except React
+- **Performance First** - Optimized rendering with tree-shakable exports
+- **Fully Customizable** - CSS Modules, custom properties, and unstyled variants
+- **Accessible by Design** - WCAG compliant with keyboard and screen reader support
+- **Responsive** - Mobile-friendly with touch interactions
+- **TypeScript** - Full type safety with comprehensive interfaces
+- **Modern React** - Support for React 18/19 with client-side rendering
 
-## 📊 Chart Types
+## Chart Types
 
 <table>
   <tr>
@@ -61,7 +61,7 @@ React Chart Lite provides a modern, minimalist approach to data visualization wi
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Installation
 
@@ -120,7 +120,7 @@ function MyChart() {
 
 ---
 
-## 📚 API Reference
+## API Reference
 
 ### Components
 
@@ -143,8 +143,9 @@ A horizontal bar chart component for comparing values across categories.
 | `barSpacing` | `number` | `2` | Space between bars in same category |
 | `categorySpacing` | `number` | `8` | Space between categories |
 | `showGrid` | `boolean` | `true` | Show grid lines |
-| `showVerticalGrid` | `boolean` | `true` | Show vertical grid lines |
-| `showHorizontalGrid` | `boolean` | `false` | Show horizontal grid lines |
+| `showValueGrid` | `boolean` | `true` | Show value grid lines (vertical) |
+| `showBaselineAxis` | `boolean` | `true` | Show baseline axis (bottom) |
+| `showLeftAxis` | `boolean` | `true` | Show left axis |
 | `gridLineVariant` | `'solid' \| 'dashed' \| 'dotted'` | `'dashed'` | Grid line style |
 | `showValues` | `boolean` | `false` | Display values on bars |
 | `animated` | `boolean` | `true` | Enable animations |
@@ -152,7 +153,7 @@ A horizontal bar chart component for comparing values across categories.
 | `showTooltip` | `boolean` | `false` | Enable interactive tooltips |
 | `onBarClick` | `(bar, categoryIndex, barIndex) => void` | `undefined` | Bar click handler |
 | `unstyled` | `boolean` | `false` | Disable default styling |
-| `classes` | `Record<string, string>` | `{}` | Custom CSS classes |
+| `classes` | `Partial<{ root: string; container: string; body: string; rows: string; row: string; rowLabel: string; rowBars: string; barWrapper: string; bar: string; barValue: string; tooltip: string }>` | `{}` | Custom CSS classes |
 
 **Type Definitions:**
 
@@ -163,7 +164,7 @@ interface ChartDataItem {
 }
 
 interface ChartBar {
-  label: string;
+  label?: string;
   value: number;
   legendId: string;
   tooltip?: string;
@@ -173,6 +174,7 @@ interface ChartLegendItem {
   id: string;
   label: string;
   color: string;
+  fillOpacity?: number; // used by Radar only
 }
 
 interface ChartScale {
@@ -199,6 +201,10 @@ Includes all `HorizontalBarChart` props plus:
 | `lineWidth` | `number` | `2` | Line stroke width |
 | `showLinePoints` | `boolean` | `true` | Show points on lines |
 | `linePointRadius` | `number` | `4` | Line point radius |
+| `showBaselineAxis` | `boolean` | `true` | Show baseline axis (bottom) |
+| `showLeftAxis` | `boolean` | `true` | Show left axis |
+| `showValueGrid` | `boolean` | `true` | Show value grid lines (horizontal) |
+| `showCategoryGrid` | `boolean` | `false` | Show category columns |
 
 **Additional Types:**
 
@@ -231,7 +237,7 @@ A pie/donut chart for displaying proportional data.
 | `showLegend` | `boolean` | `true` | Display legend |
 | `showTooltip` | `boolean` | `false` | Enable tooltips |
 | `unstyled` | `boolean` | `false` | Disable default styling |
-| `classes` | `Record<string, string>` | `{}` | Custom CSS classes |
+| `classes` | `Partial<{ root: string; container: string; square: string; svg: string; label: string; tooltip: string }>` | `{}` | Custom CSS classes |
 
 **Type Definitions:**
 
@@ -252,7 +258,7 @@ A radar/spider chart for multi-dimensional data visualization.
 |----------|------|---------|-------------|
 | `axes` | `string[]` | **required** | Axis labels |
 | `series` | `RadarChartSeries[]` | **required** | Data series |
-| `legends` | `RadarChartLegendItem[]` | **required** | Color, label, and opacity definitions |
+| `legends` | `ChartLegendItem[]` | **required** | Color, label, and opacity definitions |
 | `title` | `string` | `undefined` | Chart title |
 | `subtitle` | `string` | `undefined` | Chart subtitle |
 | `iconSrc` | `string` | `undefined` | Icon URL (44x44px) |
@@ -264,11 +270,11 @@ A radar/spider chart for multi-dimensional data visualization.
 | `gridLineVariant` | `'solid' \| 'dashed' \| 'dotted'` | `'dashed'` | Grid line style |
 | `dotRadius` | `number` | `3` | Data point radius |
 | `strokeWidth` | `number` | `2` | Line stroke width |
-| `fillOpacity` | `number` | `0.15` | Default fill opacity |
+| `fillOpacity` | `number` | `0.15` | Default fill opacity (overridden by legend's `fillOpacity` when provided) |
 | `showLegend` | `boolean` | `true` | Display legend |
 | `showTooltip` | `boolean` | `false` | Enable tooltips |
 | `unstyled` | `boolean` | `false` | Disable default styling |
-| `classes` | `Record<string, string>` | `{}` | Custom CSS classes |
+| `classes` | `Partial<{ root: string; container: string; svgWrap: string; square: string; svg: string; axisLabel: string; tooltip: string }>` | `{}` | Custom CSS classes |
 
 **Type Definitions:**
 
@@ -278,12 +284,7 @@ interface RadarChartSeries {
   legendId: string;
 }
 
-interface RadarChartLegendItem {
-  id: string;
-  label: string;
-  color: string;
-  fillOpacity?: number;
-}
+// Uses shared ChartLegendItem (id, label, color, optional fillOpacity)
 
 interface RadarChartScale {
   min: number;
@@ -293,9 +294,24 @@ interface RadarChartScale {
 }
 ```
 
+### Bar Charts: Shared Props
+
+Both `<HorizontalBarChart />` and `<VerticalBarChart />` share a common set of props:
+
+- `legends`, `scale`, `title`, `subtitle`, `iconSrc`, `showLegend`
+- `barSpacing`, `categorySpacing`
+- `showGrid`, `showValueGrid`, `gridLineVariant`
+- `showValues`, `animated`, `animationDuration`
+- `showBaselineAxis`, `showLeftAxis`
+- `className`, `style`, `id`, `showTooltip`, `unstyled`, `classes`
+
+Notes:
+- Axis names are standardized as `showBaselineAxis` (formerly `apsis`) and `showLeftAxis` (formerly `ordinat`).
+- Radar and Pie use a unified `size` prop for square viewBox sizing.
+
 ---
 
-## 🎨 Styling & Theming
+## Styling & Theming
 
 ### CSS Custom Properties
 
@@ -362,7 +378,7 @@ Each component exposes specific class names for granular control:
 
 ---
 
-## 🔧 Advanced Usage
+## Advanced Usage
 
 ### Custom Scale with Formatter
 
@@ -443,7 +459,7 @@ function handleBarClick(bar, categoryIndex, barIndex) {
 
 ---
 
-## ♿ Accessibility
+## Accessibility
 
 React Chart Lite follows WCAG guidelines:
 
@@ -465,7 +481,7 @@ React Chart Lite follows WCAG guidelines:
 
 ---
 
-## 📱 Examples
+## Examples
 
 ### Financial Dashboard
 
@@ -543,7 +559,7 @@ function PerformanceRadar() {
 
 ---
 
-## 🛠️ Development
+## Development
 
 ### Local Development
 
@@ -605,7 +621,7 @@ npm run type-check
 
 ---
 
-## 📦 Bundle Size
+## Bundle Size
 
 React Chart Lite is optimized for minimal bundle impact:
 
@@ -616,7 +632,7 @@ React Chart Lite is optimized for minimal bundle impact:
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
@@ -629,13 +645,13 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ---
 
-## 📄 License
+## License
 
 MIT © [Ömer Faruk Gürbüz](https://github.com/omerfarukgurbuz)
 
 ---
 
-## 🔗 Links
+## Links
 
 - [Documentation](https://github.com/omerfarukgurbuz/react-chart-lite)
 - [Examples](https://github.com/omerfarukgurbuz/react-chart-lite/tree/main/examples)

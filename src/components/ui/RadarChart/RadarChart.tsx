@@ -113,6 +113,31 @@ function RadarChart({
   }, [tooltip]);
   const hideTooltip = useCallback(() => { tooltip.hide(); }, [tooltip]);
 
+  // Unified hover/focus handlers using data-tooltip to avoid inline closures
+  const handleEnterOrMove = useCallback((evt: React.MouseEvent<SVGElement>) => {
+    const el = evt.currentTarget as Element;
+    const content = el.getAttribute('data-tooltip') || '';
+    if (content) {
+      tooltip.showAtEvent(evt as unknown as React.MouseEvent, content, svgWrapRef.current);
+    }
+  }, [tooltip]);
+
+  const handleLeave = useCallback(() => {
+    tooltip.hide();
+  }, [tooltip]);
+
+  const handleFocus = useCallback((evt: React.FocusEvent<SVGElement>) => {
+    const el = evt.currentTarget as Element;
+    const content = el.getAttribute('data-tooltip') || '';
+    if (content) {
+      tooltip.showAtElement(el, content, svgWrapRef.current);
+    }
+  }, [tooltip]);
+
+  const handleBlur = useCallback(() => {
+    tooltip.hide();
+  }, [tooltip]);
+
   return (
     <div className={containerClasses} id={chartId} style={style}>
       <ChartHeader variant="radar" iconSrc={iconSrc} title={title} subtitle={subtitle} />
@@ -137,30 +162,45 @@ function RadarChart({
                 const isDimmed = hoveredLegendId !== null && s.legendId !== hoveredLegendId;
                 return (
                   <g key={sIdx} aria-label={label}>
-                    <path 
-                      d={path} 
-                      fill={color} 
-                      fillOpacity={seriesFillOpacity} 
-                      stroke={color} 
-                      strokeWidth={strokeWidth} 
+                    <path
+                      d={path}
+                      fill={color}
+                      fillOpacity={seriesFillOpacity}
+                      stroke={color}
+                      strokeWidth={strokeWidth}
                       className={!unstyled && isDimmed ? styles['radar__series--dimmed'] : undefined}
-                      onMouseEnter={(e) => showTooltipAt(e, label)}
-                      onMouseMove={(e) => showTooltipAt(e, label)}
-                      onMouseLeave={hideTooltip}
+                      data-tooltip={label}
+                      aria-label={label}
+                      tabIndex={0}
+                      onMouseEnter={handleEnterOrMove}
+                      onMouseMove={handleEnterOrMove}
+                      onMouseLeave={handleLeave}
+                      onFocus={handleFocus}
+                      onBlur={handleBlur}
                     />
-                    {points.map((p, pIdx) => (
-                      <circle 
-                        key={`p-${pIdx}`} 
-                        cx={p.x} 
-                        cy={p.y} 
-                        r={dotRadius} 
-                        fill={color} 
-                        className={!unstyled && isDimmed ? styles['radar__dot--dimmed'] : undefined}
-                        onMouseEnter={(e) => showTooltipAt(e, `${label}: ${series[sIdx].values[pIdx] ?? 0}`)}
-                        onMouseMove={(e) => showTooltipAt(e, `${label}: ${series[sIdx].values[pIdx] ?? 0}`)}
-                        onMouseLeave={hideTooltip}
-                      />
-                    ))}
+                    {points.map((p, pIdx) => {
+                      const valueText = `${label}: ${series[sIdx].values[pIdx] ?? 0}`;
+                      return (
+                        <circle
+                          key={`p-${pIdx}`}
+                          cx={p.x}
+                          cy={p.y}
+                          r={dotRadius}
+                          fill={color}
+                          className={!unstyled && isDimmed ? styles['radar__dot--dimmed'] : undefined}
+                          data-tooltip={valueText}
+                          aria-label={valueText}
+                          tabIndex={0}
+                          onMouseEnter={handleEnterOrMove}
+                          onMouseMove={handleEnterOrMove}
+                          onMouseLeave={handleLeave}
+                          onFocus={handleFocus}
+                          onBlur={handleBlur}
+                        >
+                          {!showTooltip && <title>{valueText}</title>}
+                        </circle>
+                      );
+                    })}
                   </g>
                 );
               })}

@@ -2,8 +2,8 @@ export { default as HorizontalBarChart } from "./components/ui/HorizontalBarChar
 export type {
   HorizontalBarChartProps,
   ChartBar,
-  ChartLegendItem as HorizontalBarChartLegendItem,
 } from "./components/ui/HorizontalBarChart/HorizontalBarChart.types";
+export type { ChartLegendItem as HorizontalBarChartLegendItem } from "./components/ui/shared/chart/types";
 
 export { default as VerticalBarChart } from "./components/ui/VerticalBarChart/VerticalBarChart";
 export type {
@@ -11,23 +11,26 @@ export type {
   VerticalBarChartDataItem,
   VerticalBarChartScale,
   VerticalBarChartLineSeries,
-  ChartLegendItem as VerticalBarChartLegendItem,
 } from "./components/ui/VerticalBarChart/VerticalBarChart.types";
+export type { ChartLegendItem as VerticalBarChartLegendItem } from "./components/ui/shared/chart/types";
 
 export { default as PieChart } from "./components/ui/PieChart/PieChart";
 export type {
   PieChartProps,
   PieChartDatum,
-  ChartLegendItem as PieChartLegendItem,
 } from "./components/ui/PieChart/PieChart.types";
+export type { ChartLegendItem as PieChartLegendItem } from "./components/ui/shared/chart/types";
 
 export { default as RadarChart } from "./components/ui/RadarChart/RadarChart";
 export type {
   RadarChartProps,
   RadarChartSeries,
   RadarChartScale,
-  ChartLegendItem as RadarChartLegendItem,
 } from "./components/ui/RadarChart/RadarChart.types";
+export type { ChartLegendItem as RadarChartLegendItem } from "./components/ui/shared/chart/types";
+
+// Generic shared types
+export type { ChartLegendItem } from "./components/ui/shared/chart/types";
 
 export { ChartHeader } from "./components/ui/shared/chart/parts/ChartHeader";
 export { Legend } from "./components/ui/shared/chart/parts/Legend";

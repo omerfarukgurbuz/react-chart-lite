@@ -1,26 +1,11 @@
 import type React from 'react';
+import type { ChartLegendItem, GridLineVariant } from '@/components/ui/shared/chart/types';
+import type { ChartScale } from '@/utils/scale';
+export type { ChartLegendItem } from '@/components/ui/shared/chart/types';
 
-export interface RadarChartScale {
-	/** Minimum value across all axes */
-	min: number;
-	/** Maximum value across all axes */
-	max: number;
-	/** Number of concentric grid levels (rings/polygons) */
-	intervals: number;
-	/** Optional formatter for scale labels */
-	formatter?: (value: number) => string;
-}
+export type RadarChartScale = ChartScale;
 
-export interface ChartLegendItem {
-	/** Unique id to match series */
-	id: string;
-	/** Visible label shown in legend */
-	label: string;
-	/** Color used for stroke and fill */
-	color: string;
-	/** Optional custom fill opacity for this series (0..1) */
-	fillOpacity?: number;
-}
+// ChartLegendItem unified in shared types (with optional fillOpacity)
 
 export interface RadarChartSeries {
 	/** Values for each axis, in the same order as axes */
@@ -53,12 +38,12 @@ export interface RadarChartProps {
 	/** Controls axis labels visibility */
 	showAxisLabels?: boolean;
 	/** Grid line variant */
-	gridLineVariant?: 'dashed' | 'solid' | 'dotted';
+	gridLineVariant?: GridLineVariant;
 	/** Radius of the small dots at each value point */
 	dotRadius?: number;
 	/** Stroke width for series outline */
 	strokeWidth?: number;
-	/** Default fill opacity for series area (0..1) */
+	/** Default fill opacity for series area (0..1). When the legend item has `fillOpacity`, it takes precedence. */
 	fillOpacity?: number;
 	/** Square SVG viewport size in px (it will scale responsively) */
 	size?: number;

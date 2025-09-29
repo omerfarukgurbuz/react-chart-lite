@@ -1,13 +1,6 @@
 import type React from 'react';
-
-export interface ChartLegendItem {
-  /** Unique id to match slices */
-  id: string;
-  /** Visible label shown in legend */
-  label: string;
-  /** Slice color */
-  color: string;
-}
+import type { ChartLegendItem } from '@/components/ui/shared/chart/types';
+export type { ChartLegendItem } from '@/components/ui/shared/chart/types';
 
 export interface PieChartDatum {
   /** Numeric value for the slice */
