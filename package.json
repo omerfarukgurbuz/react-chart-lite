@@ -1,6 +1,6 @@
 {
   "name": "react-chart-lite",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "A lightweight and simple library for creating beautiful bar, pie, and radar charts in React applications.",
   "author": {
     "name": "Omer Faruk Gurbuz",
