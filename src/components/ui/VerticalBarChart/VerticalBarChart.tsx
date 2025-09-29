@@ -297,7 +297,7 @@ const renderXLabels = (
 
 // ==================== MAIN COMPONENT ====================
 
-export default function VerticalBarChart({
+function VerticalBarChart({
   data,
   legends,
   scale,
@@ -517,6 +517,8 @@ export const shouldChartRerender = (
     !shallowEqual(prevProps.legends, newProps.legends)
   );
 };
+
+export default React.memo(VerticalBarChart, (prev, next) => !shouldChartRerender(prev, next));
 
 // ==================== OPTIONAL UTILITIES  ====================
 

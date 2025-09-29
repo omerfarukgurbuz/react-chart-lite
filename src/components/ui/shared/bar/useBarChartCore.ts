@@ -7,22 +7,24 @@ import type { BarLike, LegendLike, UseBarChartCoreParams, UseBarChartCoreReturn 
 export function useBarChartCore<B extends BarLike = BarLike>(params: UseBarChartCoreParams<B>): UseBarChartCoreReturn {
   const { data, legends, scale, showTooltip = false, filterBarLegends = false, valueMinBase = 0, intervals = 5 } = params;
 
-  // Legend map for O(1) lookups (recompute every render based on legends)
-  const legendMap = (() => {
+  // Legend map for O(1) lookups
+  const legendMap = React.useMemo(() => {
     const map = new Map<string, LegendLike>();
     legends.forEach(l => map.set(l.id, l));
     return map;
-  })();
+  }, [legends]);
 
-  // Scale and grid lines (compute directly based on inputs)
-  const calculatedScale: ChartScale = scale
-    ? { ...scale }
-    : (() => {
-        const values = data.flatMap(item => item.bars.map(b => b.value));
-        return calculateNiceScale(values, undefined, { minBase: valueMinBase, intervals });
-      })();
+  // Scale and grid lines
+  const calculatedScale: ChartScale = React.useMemo(() => {
+    if (scale) {
+      // Return a stable clone only when scale changes
+      return { ...scale };
+    }
+    const values = data.flatMap(item => item.bars.map(b => b.value));
+    return calculateNiceScale(values, undefined, { minBase: valueMinBase, intervals });
+  }, [scale, data, valueMinBase, intervals]);
 
-  const gridLines = getGridLines(calculatedScale);
+  const gridLines = React.useMemo(() => getGridLines(calculatedScale), [calculatedScale]);
 
   const getValuePercentage = React.useCallback((value: number) => {
     const { min, max } = calculatedScale;
@@ -39,13 +41,13 @@ export function useBarChartCore<B extends BarLike = BarLike>(params: UseBarChart
   const onLegendEnter = React.useCallback((id: string) => setHoveredLegendId(id), []);
   const onLegendLeave = React.useCallback(() => setHoveredLegendId(null), []);
 
-  // Compute bar legends when requested (recompute each render based on data/legends)
-  const barLegends = (() => {
+  // Compute bar legends when requested
+  const barLegends = React.useMemo(() => {
     if (!filterBarLegends) return Array.from(legends);
     const barIds = new Set<string>();
     data.forEach(item => item.bars.forEach(b => barIds.add(b.legendId)));
     return legends.filter(l => barIds.has(l.id));
-  })();
+  }, [filterBarLegends, legends, data]);
 
   return {
     legendMap,

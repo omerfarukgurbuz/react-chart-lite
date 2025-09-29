@@ -29,7 +29,7 @@ const valueToRadius = (value: number, scale: RadarChartScale, maxRadius: number)
   return ratio * maxRadius;
 };
 
-export default function RadarChart({
+function RadarChart({
   axes,
   series,
   legends,
@@ -200,4 +200,6 @@ export default function RadarChart({
       <SharedLegend variant="radar" show={showLegend} items={legends} onEnter={(id) => setHoveredLegendId(id)} onLeave={() => setHoveredLegendId(null)} />
     </div>
   );
-} 
+}
+
+export default React.memo(RadarChart);

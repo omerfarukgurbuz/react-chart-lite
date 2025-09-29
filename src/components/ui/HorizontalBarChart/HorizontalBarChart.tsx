@@ -167,7 +167,7 @@ const BarComponent: React.FC<{
  * - Accessibility support with ARIA labels
  * - Grid lines and value formatting
  */
-export default function HorizontalBarChart({
+function HorizontalBarChart({
   data,
   legends,
   scale,
@@ -355,3 +355,5 @@ export default function HorizontalBarChart({
     </div>
   );
 }
+
+export default React.memo(HorizontalBarChart);

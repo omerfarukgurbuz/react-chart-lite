@@ -14,7 +14,7 @@ import { classNames } from '@/utils/classNames';
 /**
  * PieChart: interactive pie/donut chart with legend and tooltips
  */
-export default function PieChart({
+function PieChart({
   data,
   legends,
   title,
@@ -184,3 +184,5 @@ export default function PieChart({
     </div>
   );
 }
+
+export default React.memo(PieChart);
