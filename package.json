@@ -46,7 +46,8 @@
     "@types/react": "^19.1.12",
     "@types/react-dom": "^19.1.9",
     "tsc-alias": "^1.8.16",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "vitest": "^2.1.4"
   },
   "scripts": {
     "build": "npm run clean && tsc && tsc-alias && npm run copycss && npm run stripmaps",
@@ -56,6 +57,8 @@
     "stripmaps": "find dist -type f -name \"*.map\" -delete",
     "type-check": "tsc --noEmit",
     "test": "echo \"No tests yet\" && exit 0",
+    "test:unit": "vitest run",
+    "test:watch": "vitest",
     "dev:examples": "npm --prefix examples/demo-vite run dev",
     "dev:example:local": "cross-env RCL_LOCAL=1 npm --prefix examples/demo-vite run dev",
     "dev:example:package": "cross-env RCL_LOCAL=0 npm --prefix examples/demo-vite run dev",
