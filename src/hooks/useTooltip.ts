@@ -26,5 +26,18 @@ export function useTooltip(options: { enabled: boolean }): TooltipApi {
 		setState(prev => ({ ...prev, visible: false }));
 	}, [options.enabled]);
 
-	return { state, showAtEvent, hide };
-} 
+	const showAtElement = React.useCallback((el: Element, content: string, bodyEl?: HTMLDivElement | null) => {
+		if (!options.enabled || !bodyEl) return;
+		try {
+			const bodyRect = bodyEl.getBoundingClientRect();
+			const elRect = el.getBoundingClientRect();
+			const x = Math.max(0, Math.min(elRect.left - bodyRect.left + elRect.width / 2, bodyRect.width - 8));
+			const y = Math.max(0, Math.min(elRect.top - bodyRect.top + elRect.height / 2, bodyRect.height - 8));
+			setState({ visible: true, x, y, content });
+		} catch {
+			// no-op
+		}
+	}, [options.enabled]);
+
+	return { state, showAtEvent, showAtElement, hide };
+}

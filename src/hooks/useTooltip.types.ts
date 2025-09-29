@@ -14,5 +14,10 @@ export type TooltipApi = {
 		content: string,
 		bodyEl?: HTMLDivElement | null
 	) => void;
+	showAtElement: (
+		el: Element,
+		content: string,
+		bodyEl?: HTMLDivElement | null
+	) => void;
 	hide: () => void;
-}; 
+};
