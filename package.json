@@ -57,7 +57,7 @@
     "copycss": "node scripts/copy-scss.cjs",
     "stripmaps": "find dist -type f -name \"*.map\" -delete",
     "type-check": "tsc --noEmit",
-    "test": "echo \"No tests yet\" && exit 0",
+    "test": "vitest run",
     "test:unit": "vitest run",
     "test:watch": "vitest",
     "dev:examples": "npm --prefix examples/demo-vite run dev",
