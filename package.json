@@ -42,9 +42,10 @@
     "react-dom": "^18 || ^19"
   },
   "devDependencies": {
-    "cross-env": "^7.0.3",
+    "@types/node": "^24.5.2",
     "@types/react": "^19.1.12",
     "@types/react-dom": "^19.1.9",
+    "cross-env": "^7.0.3",
     "tsc-alias": "^1.8.16",
     "typescript": "^5.9.2",
     "vitest": "^2.1.4"
