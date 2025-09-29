@@ -1,41 +1,16 @@
 import type React from 'react';
+import type { ChartLegendItem, GridLineVariant, BarDatum } from '@/components/ui/shared/chart/types';
+import type { ChartScale } from '@/utils/scale';
+export type { ChartLegendItem } from '@/components/ui/shared/chart/types';
+export type { ChartScale } from '@/utils/scale';
 
-export interface ChartLegendItem {
-  /** Unique id to match bars/series */
-  id: string;
-  /** Visible label shown in legend */
-  label: string;
-  /** Color used for rendering bars/series */
-  color: string;
-}
-
-export interface ChartBar {
-  /** Bar için görüntülenecek metin etiketi */
-  label: string;
-  /** Bar'ın sayısal değeri */
-  value: number;
-  /** Legend item id that provides color and legend label */
-  legendId: string;
-  /** Opsiyonel tooltip veya açıklama metni */
-  tooltip?: string;
-}
+export type ChartBar = BarDatum; // keep exported name for API compatibility
 
 export interface ChartDataItem {
   /** Y ekseninde görünecek kategori etiketi */
   category: string;
   /** Bu kategoriye ait bar'lar */
   bars: ChartBar[];
-}
-
-export interface ChartScale {
-  /** X ekseninin minimum değeri */
-  min: number;
-  /** X ekseninin maksimum değeri */
-  max: number;
-  /** X ekseninde gösterilecek aralık sayısı */
-  intervals: number;
-  /** Değerlerin formatlanması için opsiyonel formatter fonksiyonu */
-  formatter?: (value: number) => string;
 }
 
 export interface HorizontalBarChartProps {
@@ -64,7 +39,7 @@ export interface HorizontalBarChartProps {
   /** Dikey değer ızgarası (X ekseni değer çizgileri) görünürlüğü */
   showVerticalGrid?: boolean;
   /** Grid çizgisi stili (noktalı/ düz) */
-  gridLineVariant?: 'dashed' | 'solid' | 'dotted';
+  gridLineVariant?: GridLineVariant;
   /** Apsis çizgisini (alt sınır) göster */
   apsis?: boolean;
   /** Ordinat çizgisini (sol sınır) göster */

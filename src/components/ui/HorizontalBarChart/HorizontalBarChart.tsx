@@ -11,18 +11,7 @@ import { classNames } from '@/utils/classNames';
 
 /** classNames moved to '@/utils/classNames' */
 
-/**
- * Calculates the width percentage of a bar based on its value and scale
- */
-const calculateBarWidth = (
-  value: number, 
-  min: number, 
-  max: number
-): number => {
-  const range = max - min || 1;
-  const normalizedValue = (value - min) / range;
-  return Math.max(0, Math.min(100, normalizedValue * 100));
-};
+// width percentage is now provided by useBarChartCore.getValuePercentage
 
 /**
  * Creates inline styles for animated and non-animated bars
@@ -202,6 +191,7 @@ function HorizontalBarChart({
     legendMap, 
     calculatedScale, 
     gridLines, 
+    getValuePercentage,
     tooltip, 
     bodyRef, 
     hoveredLegendId, 
@@ -291,7 +281,7 @@ function HorizontalBarChart({
                   {item.bars.map((bar, barIndex) => {
                     const legend = legendMap.get(bar.legendId);
                     const color = legend?.color || '#999999';
-                    const width = calculateBarWidth(bar.value, calculatedScale.min, calculatedScale.max);
+                    const width = getValuePercentage(bar.value);
                     const ariaLabel = legend 
                       ? `${item.category} - ${legend.label}: ${bar.value}` 
                       : `${item.category}: ${bar.value}`;

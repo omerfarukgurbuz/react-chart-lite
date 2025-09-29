@@ -1,41 +1,16 @@
 import type React from 'react';
+import type { ChartLegendItem, GridLineVariant, BarDatum } from '@/components/ui/shared/chart/types';
+import type { ChartScale } from '@/utils/scale';
+export type VerticalBarChartScale = ChartScale;
 
-export interface ChartLegendItem {
-  /** Unique id to match bars/series */
-  id: string;
-  /** Visible label shown in legend */
-  label: string;
-  /** Color used for rendering bars/series */
-  color: string;
-}
-
-export interface VerticalBarChartBar {
-  /** Bar için görüntülenecek metin etiketi */
-  label: string;
-  /** Bar'ın sayısal değeri */
-  value: number;
-  /** Legend item id that provides color and legend label */
-  legendId: string;
-  /** Opsiyonel tooltip veya açıklama metni */
-  tooltip?: string;
-}
+export type VerticalBarChartBar = BarDatum; // keep exported name for API compatibility
+export type { ChartLegendItem } from '@/components/ui/shared/chart/types';
 
 export interface VerticalBarChartDataItem {
   /** Y ekseninde görünecek kategori etiketi */
   category: string;
   /** Bu kategoriye ait bar'lar */
   bars: VerticalBarChartBar[];
-}
-
-export interface VerticalBarChartScale {
-  /** Y ekseninin minimum değeri */
-  min: number;
-  /** Y ekseninin maksimum değeri */
-  max: number;
-  /** Y ekseninde gösterilecek aralık sayısı */
-  intervals: number;
-  /** Değerlerin formatlanması için opsiyonel formatter fonksiyonu */
-  formatter?: (value: number) => string;
 }
 
 export interface VerticalBarChartLineSeries {
@@ -73,7 +48,7 @@ export interface VerticalBarChartLineSeries {
   /** Dikey grid çizgilerinin gösterilip gösterilmeyeceği */
   showVerticalGrid?: boolean;
   /** Grid çizgisi stili (noktalı/ düz) */
-  gridLineVariant?: 'dashed' | 'solid' | 'dotted';
+  gridLineVariant?: GridLineVariant;
   /** Değerlerin bar üzerinde gösterilip gösterilmeyeceği */
   showValues?: boolean;
   /** Animasyon aktif mi? */

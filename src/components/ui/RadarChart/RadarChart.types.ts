@@ -1,4 +1,6 @@
 import type React from 'react';
+import type { ChartLegendItem, GridLineVariant } from '@/components/ui/shared/chart/types';
+export type { ChartLegendItem } from '@/components/ui/shared/chart/types';
 
 export interface RadarChartScale {
 	/** Minimum value across all axes */
@@ -11,16 +13,7 @@ export interface RadarChartScale {
 	formatter?: (value: number) => string;
 }
 
-export interface ChartLegendItem {
-	/** Unique id to match series */
-	id: string;
-	/** Visible label shown in legend */
-	label: string;
-	/** Color used for stroke and fill */
-	color: string;
-	/** Optional custom fill opacity for this series (0..1) */
-	fillOpacity?: number;
-}
+// ChartLegendItem unified in shared types (with optional fillOpacity)
 
 export interface RadarChartSeries {
 	/** Values for each axis, in the same order as axes */
@@ -53,7 +46,7 @@ export interface RadarChartProps {
 	/** Controls axis labels visibility */
 	showAxisLabels?: boolean;
 	/** Grid line variant */
-	gridLineVariant?: 'dashed' | 'solid' | 'dotted';
+	gridLineVariant?: GridLineVariant;
 	/** Radius of the small dots at each value point */
 	dotRadius?: number;
 	/** Stroke width for series outline */

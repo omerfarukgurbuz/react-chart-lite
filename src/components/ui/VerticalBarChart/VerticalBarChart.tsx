@@ -14,8 +14,7 @@ import type {
   VerticalBarChartLineSeries,
   ChartLegendItem,
 } from './VerticalBarChart.types';
-import { useTooltip } from '@/hooks/useTooltip';
-import { calculateNiceScale as calcNiceScale } from '@/utils/scale';
+import type { useTooltip } from '@/hooks/useTooltip';
 import { useBarChartCore } from '../shared/bar/useBarChartCore';
 import { classNames } from '@/utils/classNames';
 
@@ -43,29 +42,7 @@ const shallowEqual = (obj1: unknown, obj2: unknown): boolean => {
 };
 
 // ==================== SCALE CALCULATION FUNCTIONS ====================
-
-// kept for line layer height mapping
-const calculateScale = (
-  data: VerticalBarChartProps['data'],
-  lineSeries: NonNullable<VerticalBarChartProps['lineSeries']>,
-  scale?: VerticalBarChartProps['scale']
-) => {
-  if (scale) return { ...scale };
-
-  const barValues = data.flatMap(item => item.bars.map(bar => bar.value));
-  const lineValues = lineSeries.flatMap(s => s.values);
-  const s = calcNiceScale([...barValues, ...lineValues], undefined, { minBase: 0, intervals: 5 });
-  return s;
-};
-
-const getBarHeight = (
-  value: number,
-  scale: ReturnType<typeof calculateScale>
-): number => {
-  const { min, max } = scale;
-  const percentage = ((value - min) / (max - min || 1)) * 100;
-  return Math.max(0, Math.min(100, percentage));
-};
+// Height/position now derive from shared getValuePercentage from useBarChartCore
 
 // ==================== GEOMETRY CALCULATION FUNCTIONS ====================
 
@@ -81,9 +58,9 @@ const computeGroupWidth = (
 const createValueToY = (
   chartHeight: number,
   dpr: number,
-  scale: ReturnType<typeof calculateScale>
+  getValuePercentage: (value: number) => number
 ) => (value: number): number => {
-  const pct = getBarHeight(value, scale) / 100;
+  const pct = getValuePercentage(value) / 100;
   return (1 - pct) * chartHeight * dpr;
 };
 
@@ -105,7 +82,7 @@ const renderLineLayer = (
   chartHeight: number,
   data: VerticalBarChartProps['data'],
   categorySpacing: number,
-  calculatedScale: ReturnType<typeof calculateScale>,
+  getValuePercentage: (value: number) => number,
   lineWidth: number,
   showLinePoints: boolean,
   linePointRadius: number,
@@ -138,7 +115,7 @@ const renderLineLayer = (
       {lineSeries.map((series, sIdx) => {
         const totalCategories = data.length;
         const groupWidth = computeGroupWidth(containerWidth, totalCategories, categorySpacing);
-        const valueToY = createValueToY(chartHeight, 1, calculatedScale);
+        const valueToY = createValueToY(chartHeight, 1, getValuePercentage);
         const categoryCenterX = createCategoryCenterX(groupWidth, categorySpacing, 1);
 
         const points = series.values
@@ -199,7 +176,7 @@ const renderLineLayer = (
 const renderBars = (
   data: VerticalBarChartProps['data'],
   barSpacing: number,
-  calculatedScale: ReturnType<typeof calculateScale>,
+  getValuePercentage: (value: number) => number,
   showValues: boolean,
   animated: boolean,
   animationDuration: number,
@@ -220,7 +197,7 @@ const renderBars = (
       aria-label={item.category}
     >
       {item.bars.map((bar, barIndex) => {
-        const height = getBarHeight(bar.value, calculatedScale);
+        const height = getValuePercentage(bar.value);
         const legend = (legendMap as Map<string, { id: string; label: string; color: string }>).get(bar.legendId);
         const color = legend?.color || '#999999';
 
@@ -340,7 +317,7 @@ function VerticalBarChart({
   const chartId = id ?? reactId;
   const columnsRef = useRef<HTMLDivElement | null>(null);
   const [containerWidth, setContainerWidth] = useState(0);
-  const { legendMap, calculatedScale, gridLines, tooltip, hoveredLegendId, onLegendEnter, onLegendLeave, barLegends } = useBarChartCore({
+  const { legendMap, calculatedScale, gridLines, tooltip, hoveredLegendId, onLegendEnter, onLegendLeave, barLegends, getValuePercentage } = useBarChartCore({
     data,
     legends,
     scale,
@@ -405,7 +382,7 @@ function VerticalBarChart({
             {renderBars(
               data,
               barSpacing,
-              calculatedScale,
+              getValuePercentage,
               showValues,
               animated,
               animationDuration,
@@ -425,7 +402,7 @@ function VerticalBarChart({
               chartHeight,
               data,
               categorySpacing,
-              calculatedScale,
+              getValuePercentage,
               lineWidth,
               showLinePoints,
               linePointRadius,
