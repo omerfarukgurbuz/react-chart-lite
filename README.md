@@ -566,6 +566,30 @@ cd examples/demo-vite
 npm install && npm run dev
 ```
 
+### Examples: Local vs Package (Cross-Platform)
+
+You can run the example app in two modes to test the library either from the local source or from the published npm package.
+
+Setup once:
+
+```bash
+npm run setup:examples
+```
+
+Run against local source (live-reloads on changes in `src/`):
+
+```bash
+npm run dev:example:local
+```
+
+Run against the published package (as installed in `examples/demo-vite/node_modules`):
+
+```bash
+npm run dev:example:package
+```
+
+Cross‑platform note: These scripts use `cross-env` so they work the same on macOS, Linux, and Windows (PowerShell/cmd). The Vite config in `examples/demo-vite/vite.config.ts` checks `process.env.RCL_LOCAL` to switch aliases between local `src` and the installed package.
+
 ### Building
 
 ```bash
