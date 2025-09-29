@@ -555,10 +555,13 @@ git clone https://github.com/omerfarukgurbuz/react-chart-lite.git
 cd react-chart-lite
 npm install
 
-# Run development server
-npm run dev
+# Setup example app dependencies (one-time)
+npm run setup:examples
 
-# Run example app
+# Run example app (from project root)
+npm run dev:examples
+
+# Alternatively, run the example directly
 cd examples/demo-vite
 npm install && npm run dev
 ```

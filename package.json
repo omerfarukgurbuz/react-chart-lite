@@ -52,7 +52,11 @@
     "clean": "rm -rf dist",
     "prepublishOnly": "npm run build",
     "copycss": "node scripts/copy-scss.cjs",
-    "stripmaps": "find dist -type f -name \"*.map\" -delete"
+    "stripmaps": "find dist -type f -name \"*.map\" -delete",
+    "type-check": "tsc --noEmit",
+    "test": "echo \"No tests yet\" && exit 0",
+    "dev:examples": "npm --prefix examples/demo-vite run dev",
+    "setup:examples": "npm --prefix examples/demo-vite install"
   },
   "exports": {
     ".": {
