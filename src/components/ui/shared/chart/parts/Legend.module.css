@@ -1,0 +1,52 @@
+/* Shared legend styles for all chart variants */
+.legend {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  column-gap: 2rem;
+  row-gap: 0.75rem;
+  width: 100%;
+  margin-top: 38px;
+}
+
+/* Pie generally uses left alignment */
+[data-variant="pie"] .legend {
+  justify-content: flex-start;
+  column-gap: 0.5rem;
+  margin-top: 0;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.legendColor {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 9999px;
+}
+
+.legendLabel {
+  font-size: 0.75rem;
+  color: var(--rcl-text-primary, #1b1b1b);
+  font-weight: 400;
+}
+
+.legendLine {
+  width: 1rem;
+  height: 0;
+  border-top-width: 2px;
+  border-top-style: solid;
+}
+
+.legendLineDashed {
+  border-top-style: dashed;
+}
+
+@media (min-width: 768px) {
+  .legendColor { width: 1rem; height: 1rem; }
+  .legendLabel { font-size: 0.875rem; }
+  .legendLine { width: 1.25rem; }
+}
