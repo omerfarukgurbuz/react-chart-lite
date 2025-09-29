@@ -10,12 +10,12 @@ export interface VerticalBarChartDataItem {
   /** Y ekseninde görünecek kategori etiketi */
   category: string;
   /** Bu kategoriye ait bar'lar */
-  bars: VerticalBarChartBar[];
+  bars: ReadonlyArray<VerticalBarChartBar>;
 }
 
 export interface VerticalBarChartLineSeries {
   /** Kategoriler ile aynı sırada olacak şekilde değerler dizisi */
-  values: number[];
+  values: ReadonlyArray<number>;
   /** Legend mapping id for color/label */
   legendId: string;
   /** Kesik çizgi için */

@@ -10,14 +10,14 @@ export interface ChartDataItem {
   /** Y ekseninde görünecek kategori etiketi */
   category: string;
   /** Bu kategoriye ait bar'lar */
-  bars: ChartBar[];
+  bars: ReadonlyArray<ChartBar>;
 }
 
 export interface HorizontalBarChartProps {
   /** Grafik verisi */
-  data: ChartDataItem[];
+  data: ReadonlyArray<ChartDataItem>;
   /** Explicit legend items mapping ids to labels and colors */
-  legends: ChartLegendItem[];
+  legends: ReadonlyArray<ChartLegendItem>;
   /** X ekseni ölçek ayarları */
   scale?: ChartScale;
   /** Grafik başlığı */

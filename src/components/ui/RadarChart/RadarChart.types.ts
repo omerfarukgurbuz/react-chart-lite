@@ -1,17 +1,9 @@
 import type React from 'react';
 import type { ChartLegendItem, GridLineVariant } from '@/components/ui/shared/chart/types';
+import type { ChartScale } from '@/utils/scale';
 export type { ChartLegendItem } from '@/components/ui/shared/chart/types';
 
-export interface RadarChartScale {
-	/** Minimum value across all axes */
-	min: number;
-	/** Maximum value across all axes */
-	max: number;
-	/** Number of concentric grid levels (rings/polygons) */
-	intervals: number;
-	/** Optional formatter for scale labels */
-	formatter?: (value: number) => string;
-}
+export type RadarChartScale = ChartScale;
 
 // ChartLegendItem unified in shared types (with optional fillOpacity)
 

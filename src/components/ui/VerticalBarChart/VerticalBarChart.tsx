@@ -14,7 +14,7 @@ import type {
   VerticalBarChartLineSeries,
   ChartLegendItem,
 } from './VerticalBarChart.types';
-import type { useTooltip } from '@/hooks/useTooltip';
+import { useTooltip } from '@/hooks/useTooltip';
 import { useBarChartCore } from '../shared/bar/useBarChartCore';
 import { classNames } from '@/utils/classNames';
 
@@ -129,7 +129,7 @@ const renderLineLayer = (
           acc + (i === 0 ? `M ${p.x} ${p.y}` : ` L ${p.x} ${p.y}`)
         ), '');
 
-        const legend = (legendMap as Map<string, { id: string; label: string; color: string }>).get(series.legendId);
+        const legend = legendMap.get(series.legendId);
         const strokeColor = legend?.color || '#888888';
         const isDimmed = hoveredLegendId !== null && series.legendId !== hoveredLegendId;
 
@@ -198,7 +198,7 @@ const renderBars = (
     >
       {item.bars.map((bar, barIndex) => {
         const height = getValuePercentage(bar.value);
-        const legend = (legendMap as Map<string, { id: string; label: string; color: string }>).get(bar.legendId);
+        const legend = (legendMap as Map<string, ChartLegendItem>).get(bar.legendId);
         const color = legend?.color || '#999999';
 
         const baseStyle: React.CSSProperties & {
@@ -430,7 +430,7 @@ function VerticalBarChart({
         show={showLegend}
         items={barLegends}
         lineItems={lineSeries}
-        legendMap={legendMap as unknown as Map<string, { id: string; label: string; color: string }>}
+        legendMap={legendMap as unknown as Map<string, ChartLegendItem>}
         onEnter={(id) => onLegendEnter(id)}
         onLeave={() => onLegendLeave()}
       />
