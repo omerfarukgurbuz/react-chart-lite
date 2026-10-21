@@ -1,69 +1,65 @@
-# React + TypeScript + Vite
+# React Chart Lite demo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Interactive examples of vertical and horizontal bars, line overlays, pie/donut,
+and radar charts using React Chart Lite 2.x. The existing gallery also demonstrates
+custom palettes, scales, tooltips, and multiple series.
 
-Currently, two official plugins are available:
+## Run from a fresh clone
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Use Node.js 20.19+ or 22.12+ (Node.js 22 LTS recommended).
+Run these commands from the repository root:
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run setup:examples
+npm run dev:example:package
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Open the local URL printed by Vite (usually http://localhost:5173).
+You should see the React Chart Lite heading and the chart gallery. Hover over
+bars or slices to try tooltips. Project links lead to the quick start, npm,
+and GitHub.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Develop the library
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev:example:local
 ```
+
+This uses `src/index.ts` from this repository and reloads when library source
+changes. Package mode uses the installed npm package instead. The example pins
+the supported major version to 2.x, matching the current library API.
+
+## Build a shareable static demo
+
+From the repository root:
+
+```bash
+npm run build:examples
+npm run preview:examples
+```
+
+The build type-checks the demo and bundles the installed npm package by default.
+Open the preview URL printed by Vite (usually http://localhost:4173), then verify
+the gallery and tooltips. The output is `examples/demo-vite/dist/`.
+
+To bundle local library changes instead:
+
+```bash
+npx cross-env RCL_LOCAL=1 npm run build:examples
+npm run preview:examples
+```
+
+Vite uses relative asset URLs, so the built files can also be served under a
+repository subpath. Serve `dist/` over HTTP; do not open `index.html` as a local
+file. No secrets, API, or backend are required.
+
+## Publish when ready
+
+Upload the contents of `examples/demo-vite/dist/` to a static host after reviewing
+the preview. If the host builds from source, use the repository root, install root
+and demo dependencies, run `npm run build:examples`, and select
+`examples/demo-vite/dist` as the publish directory.
+
+Once a public URL exists, add it near the top of the main README. There is no
+hosted demo URL yet; building and previewing locally does not publish anything.
