@@ -8,9 +8,9 @@
 
 **Lightweight, style-agnostic chart components for React 18/19**
 
-[Quick start](#quick-start) · [Run the interactive demo](examples/demo-vite/README.md) · [Contribute](CONTRIBUTING.md)
+[Live demo](https://omerfarukgurbuz.github.io/react-chart-lite/) · [Quick start](#quick-start) · [Run locally](examples/demo-vite/README.md) · [Contribute](CONTRIBUTING.md)
 
-The demo includes bar, pie, donut, radar, and line-overlay examples. [Run it locally or build a static preview](examples/demo-vite/README.md); a hosted demo is not available yet.
+The [interactive demo](https://omerfarukgurbuz.github.io/react-chart-lite/) includes bar, pie, donut, radar, and line-overlay examples. You can also [run it locally or build a static preview](examples/demo-vite/README.md).
 
 <p align="center">
   <img src="docs/main.gif" alt="react-chart-lite showcase: Weekly Metrics" />
@@ -671,6 +671,7 @@ MIT © [Ömer Faruk Gürbüz](https://github.com/omerfarukgurbuz)
 ## Links
 
 - [Documentation](https://github.com/omerfarukgurbuz/react-chart-lite)
+- [Live demo](https://omerfarukgurbuz.github.io/react-chart-lite/)
 - [Examples](https://github.com/omerfarukgurbuz/react-chart-lite/tree/main/examples)
 - [Changelog](CHANGELOG.md)
 - [Issues](https://github.com/omerfarukgurbuz/react-chart-lite/issues)

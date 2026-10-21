@@ -1,5 +1,7 @@
 # React Chart Lite demo
 
+[Open the live demo](https://omerfarukgurbuz.github.io/react-chart-lite/)
+
 Interactive examples of vertical and horizontal bars, line overlays, pie/donut,
 and radar charts using React Chart Lite 2.x. The existing gallery also demonstrates
 custom palettes, scales, tooltips, and multiple series.
@@ -54,12 +56,17 @@ Vite uses relative asset URLs, so the built files can also be served under a
 repository subpath. Serve `dist/` over HTTP; do not open `index.html` as a local
 file. No secrets, API, or backend are required.
 
-## Publish when ready
+## Publish an update
 
-Upload the contents of `examples/demo-vite/dist/` to a static host after reviewing
-the preview. If the host builds from source, use the repository root, install root
-and demo dependencies, run `npm run build:examples`, and select
-`examples/demo-vite/dist` as the publish directory.
+The public demo is hosted on GitHub Pages from the root of the `gh-pages`
+branch. That branch contains the built static files, not the library source.
 
-Once a public URL exists, add it near the top of the main README. There is no
-hosted demo URL yet; building and previewing locally does not publish anything.
+1. Run `npm run build:examples` and review `npm run preview:examples`.
+2. In a separate checkout of `gh-pages`, replace the previous build with the
+   contents of `examples/demo-vite/dist/`. Keep `LICENSE` and `.nojekyll`.
+3. Commit and push that branch. GitHub Pages builds and deploys the update.
+4. Check the Pages deployment in GitHub Actions and open the live demo to
+   verify the gallery and tooltips.
+
+Source changes in pull requests do not automatically update the public demo.
+The first deployment uses the verified 2.0.0 npm package demo prepared in PR #12.
