@@ -8,6 +8,10 @@
 
 **Lightweight, style-agnostic chart components for React 18/19**
 
+[Live demo](https://omerfarukgurbuz.github.io/react-chart-lite/) · [Quick start](#quick-start) · [Run locally](examples/demo-vite/README.md) · [Contribute](CONTRIBUTING.md)
+
+The [interactive demo](https://omerfarukgurbuz.github.io/react-chart-lite/) includes bar, pie, donut, radar, and line-overlay examples. You can also [run it locally or build a static preview](examples/demo-vite/README.md).
+
 <p align="center">
   <img src="docs/main.gif" alt="react-chart-lite showcase: Weekly Metrics" />
   <br/>
@@ -74,7 +78,7 @@ pnpm add react-chart-lite
 ```
 
 **Requirements:**
-- React 18+ or React 19+
+- React and React DOM 18.x or 19.x
 - Client-side rendering environment
 
 ### Basic Usage
@@ -104,7 +108,7 @@ const legends = [
   { id: 'expenses', label: 'Expenses', color: '#F59E0B' }
 ];
 
-function MyChart() {
+export default function MyChart() {
   return (
     <VerticalBarChart
       data={data}
@@ -563,6 +567,8 @@ function PerformanceRadar() {
 
 ### Local Development
 
+The Vite demo requires Node.js 20.19+ or 22.12+ (Node.js 22 LTS recommended).
+
 ```bash
 # Clone the repository
 git clone https://github.com/omerfarukgurbuz/react-chart-lite.git
@@ -575,7 +581,7 @@ npm install
 npm run setup:examples
 
 # Run example app (from project root)
-npm run dev:examples
+npm run dev:example:local
 
 # Alternatively, run the example directly
 cd examples/demo-vite
@@ -605,6 +611,17 @@ npm run dev:example:package
 ```
 
 Cross‑platform note: These scripts use `cross-env` so they work the same on macOS, Linux, and Windows (PowerShell/cmd). The Vite config in `examples/demo-vite/vite.config.ts` checks `process.env.RCL_LOCAL` to switch aliases between local `src` and the installed package.
+
+### Demo production preview
+
+```bash
+npm run build:examples
+npm run preview:examples
+```
+
+This builds against the installed npm 2.x package. The static output is
+`examples/demo-vite/dist/`; see the [demo guide](examples/demo-vite/README.md)
+for local-source mode and hosting instructions.
 
 ### Building
 
@@ -654,6 +671,7 @@ MIT © [Ömer Faruk Gürbüz](https://github.com/omerfarukgurbuz)
 ## Links
 
 - [Documentation](https://github.com/omerfarukgurbuz/react-chart-lite)
+- [Live demo](https://omerfarukgurbuz.github.io/react-chart-lite/)
 - [Examples](https://github.com/omerfarukgurbuz/react-chart-lite/tree/main/examples)
 - [Changelog](CHANGELOG.md)
 - [Issues](https://github.com/omerfarukgurbuz/react-chart-lite/issues)

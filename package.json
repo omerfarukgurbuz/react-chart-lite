@@ -63,6 +63,8 @@
     "dev:examples": "npm --prefix examples/demo-vite run dev",
     "dev:example:local": "cross-env RCL_LOCAL=1 npm --prefix examples/demo-vite run dev",
     "dev:example:package": "cross-env RCL_LOCAL=0 npm --prefix examples/demo-vite run dev",
+    "build:examples": "npm --prefix examples/demo-vite run build",
+    "preview:examples": "npm --prefix examples/demo-vite run preview",
     "setup:examples": "npm --prefix examples/demo-vite install"
   },
   "exports": {
