@@ -43,6 +43,28 @@ export const buildArcPath = (
 	const rOuter = roundTo(outerR);
 	const rInner = roundTo(innerR);
 
+	// SVG cannot draw a full circle with one arc whose endpoints coincide.
+	if (endAngle - startAngle >= 360) {
+		const midOuter = polarToCartesian(cx, cy, outerR, startAngle + 180);
+		const outerPath = [
+			`M ${sox} ${soy}`,
+			`A ${rOuter} ${rOuter} 0 0 1 ${roundTo(midOuter.x)} ${roundTo(midOuter.y)}`,
+			`A ${rOuter} ${rOuter} 0 0 1 ${sox} ${soy}`,
+			'Z',
+		];
+		if (innerR <= 0) return outerPath.join(' ');
+
+		const midInner = polarToCartesian(cx, cy, innerR, startAngle + 180);
+		// Opposite winding keeps the center empty with SVG's default fill rule.
+		return [
+			...outerPath,
+			`M ${eix} ${eiy}`,
+			`A ${rInner} ${rInner} 0 0 0 ${roundTo(midInner.x)} ${roundTo(midInner.y)}`,
+			`A ${rInner} ${rInner} 0 0 0 ${eix} ${eiy}`,
+			'Z',
+		].join(' ');
+	}
+
 	if (innerR <= 0) {
 		// Full pie (no inner hole)
 		return [
@@ -61,4 +83,4 @@ export const buildArcPath = (
 		`A ${rInner} ${rInner} 0 ${largeArc} 0 ${eix} ${eiy}`,
 		'Z',
 	].join(' ');
-}; 
+};
