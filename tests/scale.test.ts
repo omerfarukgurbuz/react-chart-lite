@@ -16,6 +16,17 @@ describe('scale utils', () => {
     expect(s.max).toBe(100);
   });
 
+  it('calculateNiceScale handles large datasets without exceeding the argument limit', () => {
+    const values = Array<number>(250_000).fill(3);
+    values[125_000] = 17;
+
+    const s = calculateNiceScale(values);
+
+    expect(s.min).toBe(0);
+    expect(s.max).toBe(20);
+    expect(s.intervals).toBe(5);
+  });
+
   it('calculateNiceScale respects provided scale', () => {
     const provided = { min: 10, max: 50, intervals: 4, formatter: (v: number) => `${v}` };
     const s = calculateNiceScale([1, 2, 3], provided);
