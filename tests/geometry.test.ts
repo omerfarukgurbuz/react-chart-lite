@@ -38,6 +38,14 @@ describe('geometry utils', () => {
     expect((donut.match(/A /g) || [])).toHaveLength(2);
   });
 
+  it.each([0, 20])('omits empty and padded-out slices with inner radius %s', (innerR) => {
+    // Zero values have no angular span; padding can also consume an entire slice.
+    expect(buildArcPath(50, 50, 40, innerR, -90, -90)).toBe('');
+    expect(buildArcPath(50, 50, 40, innerR, -85, -95)).toBe('');
+    expect(buildArcPath(50, 50, 40, innerR, -85, -94)).toBe('');
+    expect(buildArcPath(50, 50, 40, innerR, -85, -84)).not.toBe('');
+  });
+
   it.each([0, 20])('draws a full circle with inner radius %s using semicircular arcs', (innerR) => {
     const path = buildArcPath(50, 50, 40, innerR, -90, 270);
     const arcs = [...path.matchAll(/A ([\d.]+) ([\d.]+) 0 (\d) (\d) ([\d.-]+) ([\d.-]+)/g)];

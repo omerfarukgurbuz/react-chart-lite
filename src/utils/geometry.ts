@@ -23,6 +23,9 @@ export const buildArcPath = (
 	startAngle: number,
 	endAngle: number
 ) => {
+	// Padding may consume a slice; reversed angles would draw an unintended arc.
+	if (endAngle <= startAngle) return '';
+
 	const startOuter = polarToCartesian(cx, cy, outerR, startAngle);
 	const endOuter = polarToCartesian(cx, cy, outerR, endAngle);
 	const startInner = polarToCartesian(cx, cy, innerR, endAngle);
