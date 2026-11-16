@@ -13,7 +13,11 @@ export function calculateNiceScale(
 	if (provided) return { ...provided };
 	const minBase = options?.minBase ?? 0;
 	const safeValues = Array.isArray(values) && values.length > 0 ? values : [0];
-	const maxValue = Math.max(minBase, ...safeValues);
+	// Avoid exceeding the function argument limit with large datasets.
+	let maxValue = minBase;
+	for (const value of safeValues) {
+		maxValue = Math.max(maxValue, value);
+	}
 	const range = maxValue - minBase;
 	const magnitude = Math.pow(10, Math.floor(Math.log10(range || 1)));
 	const roundedMax = Math.ceil(maxValue / magnitude) * magnitude;
@@ -33,4 +37,4 @@ export function getGridLines(scale: ChartScale): Array<{ value: number; position
 		const position = ((value - min) / (max - min || 1)) * 100;
 		return { value, position };
 	});
-} 
+}
