@@ -14,10 +14,14 @@ import { classNames } from '@/utils/classNames';
 // classNames moved to '@/utils/classNames'
 
 // Compute scale if not provided
-const inferScale = (series: RadarChartSeries[], provided?: RadarChartScale): RadarChartScale => {
+const inferScale = (series: readonly RadarChartSeries[], provided?: RadarChartScale): RadarChartScale => {
   if (provided) return { ...provided };
-  const values = series.flatMap(s => s.values);
-  const maxValue = Math.max(0, ...values);
+  let maxValue = 0;
+  for (const { values } of series) {
+    values.forEach(value => {
+      maxValue = Math.max(maxValue, value);
+    });
+  }
   const magnitude = Math.pow(10, Math.floor(Math.log10(Math.max(1, maxValue))));
   const roundedMax = Math.ceil(maxValue / magnitude) * magnitude || 10;
   return { min: 0, max: roundedMax, intervals: 5, formatter: (v: number) => v.toString() };
@@ -66,7 +70,7 @@ function RadarChart({
   const maxRadius = center * 0.8;
 
   // Derived scale and related values
-  const resolvedScale = useMemo(() => inferScale(series as RadarChartSeries[], scale), [series, scale]);
+  const resolvedScale = useMemo(() => inferScale(series, scale), [series, scale]);
   const axisCount = Math.max(1, axes.length);
   const angleStep = 360 / axisCount;
 
