@@ -214,6 +214,15 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 function App() {
   return (
     <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <header className="md:col-span-2 lg:col-span-3 space-y-3">
+        <h1 className="text-3xl font-bold">React Chart Lite</h1>
+        <p>Explore bar, pie, donut, and radar charts, including line overlays and custom styling.</p>
+        <nav aria-label="Project links" className="flex flex-wrap gap-4">
+          <a className="text-blue-700 underline" href="https://github.com/omerfarukgurbuz/react-chart-lite#quick-start">Quick start</a>
+          <a className="text-blue-700 underline" href="https://www.npmjs.com/package/react-chart-lite">npm package</a>
+          <a className="text-blue-700 underline" href="https://github.com/omerfarukgurbuz/react-chart-lite">Source on GitHub</a>
+        </nav>
+      </header>
       {/* Full-width testbed */}
       <div className="md:col-span-2 lg:col-span-3">
         <Section title="Testbed – Vertical (20 columns, 3 bars + 4 random lines)">

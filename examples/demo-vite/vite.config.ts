@@ -8,24 +8,25 @@ export default defineConfig(() => {
 
   return {
     plugins: [react()],
+    // Keep built assets portable when hosted under a repository subpath.
+    base: './',
     resolve: {
-      alias: isLocal
-        ? {
-            // Use local source for development
-            'react-chart-lite': fileURLToPath(new URL('../../src/index.ts', import.meta.url)),
-            '@': fileURLToPath(new URL('../../src', import.meta.url)),
-            // Ensure single React instance
-            react: fileURLToPath(new URL('./node_modules/react', import.meta.url)),
-            'react-dom': fileURLToPath(new URL('./node_modules/react-dom', import.meta.url)),
-            'react/jsx-runtime': fileURLToPath(new URL('./node_modules/react/jsx-runtime.js', import.meta.url)),
-          }
-        : {
-            // Default: use installed npm package
-            '@': fileURLToPath(new URL('./node_modules/react-chart-lite/dist', import.meta.url)),
-            react: fileURLToPath(new URL('./node_modules/react', import.meta.url)),
-            'react-dom': fileURLToPath(new URL('./node_modules/react-dom', import.meta.url)),
-            'react/jsx-runtime': fileURLToPath(new URL('./node_modules/react/jsx-runtime.js', import.meta.url)),
-          },
+      alias: [
+        ...(isLocal ? [{
+          find: 'react-chart-lite',
+          replacement: fileURLToPath(new URL('../../src/index.ts', import.meta.url)),
+        }] : []),
+        {
+          find: '@',
+          replacement: fileURLToPath(new URL(
+            isLocal ? '../../src' : './node_modules/react-chart-lite/dist',
+            import.meta.url,
+          )),
+        },
+        // Resolve React (including subpaths) from the demo in both modes.
+        { find: 'react', replacement: fileURLToPath(new URL('./node_modules/react', import.meta.url)) },
+        { find: 'react-dom', replacement: fileURLToPath(new URL('./node_modules/react-dom', import.meta.url)) },
+      ],
       dedupe: ['react', 'react-dom'],
     },
     server: {

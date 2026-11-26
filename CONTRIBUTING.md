@@ -68,12 +68,13 @@ yarn install
 yarn build
 ```
 
-4. To test your changes in the example app:
+4. To test your changes in the example app (Node.js 20.19+ or 22.12+):
 ```bash
-cd examples/demo-vite
-yarn install
-yarn dev
+npm run setup:examples
+npm run dev:example:local
 ```
+
+See the [demo guide](examples/demo-vite/README.md) for npm-package mode and a static production preview.
 
 ### Project Structure
 
