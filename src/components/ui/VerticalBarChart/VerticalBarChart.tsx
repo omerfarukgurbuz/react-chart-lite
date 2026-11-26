@@ -24,9 +24,10 @@ import { classNames } from '@/utils/classNames';
 
 /** Shallow object comparison */
 const shallowEqual = (obj1: unknown, obj2: unknown): boolean => {
-  if (obj1 === obj2) return true;
+  if (Object.is(obj1, obj2)) return true;
   if (!obj1 || !obj2) return false;
   if (typeof obj1 !== 'object' || typeof obj2 !== 'object') return false;
+  if (Array.isArray(obj1) !== Array.isArray(obj2)) return false;
 
   const a = obj1 as Record<string, unknown>;
   const b = obj2 as Record<string, unknown>;
@@ -36,7 +37,9 @@ const shallowEqual = (obj1: unknown, obj2: unknown): boolean => {
   if (keys1.length !== keys2.length) return false;
 
   for (const key of keys1) {
-    if (a[key] !== b[key]) return false;
+    if (!Object.prototype.hasOwnProperty.call(b, key) || !Object.is(a[key], b[key])) {
+      return false;
+    }
   }
   return true;
 };
@@ -483,29 +486,42 @@ export const hasChartDataChanged = (
   prevData: VerticalBarChartProps['data'],
   newData: VerticalBarChartProps['data']
 ): boolean => {
+  if (prevData === newData) return false;
   if (prevData.length !== newData.length) return true;
-  
+
   for (let i = 0; i < prevData.length; i++) {
     const prevItem = prevData[i];
     const newItem = newData[i];
-    
+
+    if (prevItem === newItem) continue;
     if (prevItem.category !== newItem.category) return true;
     if (prevItem.bars.length !== newItem.bars.length) return true;
-    
+
     for (let j = 0; j < prevItem.bars.length; j++) {
       const prevBar = prevItem.bars[j];
       const newBar = newItem.bars[j];
-      
-      if (prevBar.value !== newBar.value || 
-          prevBar.label !== newBar.label || 
-          prevBar.legendId !== newBar.legendId) {
+
+      if (
+        !Object.is(prevBar.value, newBar.value) ||
+        prevBar.label !== newBar.label ||
+        prevBar.legendId !== newBar.legendId ||
+        prevBar.tooltip !== newBar.tooltip
+      ) {
         return true;
       }
     }
   }
-  
+
   return false;
 };
+
+const SHALLOW_COMPARED_PROPS = new Set<keyof VerticalBarChartProps>([
+  'scale',
+  'lineSeries',
+  'legends',
+  'style',
+  'classes',
+]);
 
 /**
  * Memory-efficient props comparison
@@ -514,21 +530,35 @@ export const shouldChartRerender = (
   prevProps: Partial<VerticalBarChartProps>,
   newProps: Partial<VerticalBarChartProps>
 ): boolean => {
-  const criticalProps = [
-    'chartHeight', 'barSpacing', 'categorySpacing', 'showLine', 
-    'lineWidth', 'showLinePoints', 'linePointRadius'
-  ] as const;
-  
-  for (const prop of criticalProps) {
-    if (prevProps[prop] !== newProps[prop]) return true;
+  if (prevProps === newProps) return false;
+
+  const keys = new Set<string>([
+    ...Object.keys(prevProps),
+    ...Object.keys(newProps),
+  ]);
+
+  for (const key of keys) {
+    if (key === 'data') {
+      if (hasChartDataChanged(prevProps.data || [], newProps.data || [])) {
+        return true;
+      }
+      continue;
+    }
+
+    const propKey = key as keyof VerticalBarChartProps;
+    if (SHALLOW_COMPARED_PROPS.has(propKey)) {
+      if (!shallowEqual(prevProps[propKey], newProps[propKey])) {
+        return true;
+      }
+      continue;
+    }
+
+    if (!Object.is(prevProps[propKey], newProps[propKey])) {
+      return true;
+    }
   }
-  
-  return (
-    !shallowEqual(prevProps.scale, newProps.scale) ||
-    hasChartDataChanged(prevProps.data || [], newProps.data || []) ||
-    !shallowEqual(prevProps.lineSeries, newProps.lineSeries) ||
-    !shallowEqual(prevProps.legends, newProps.legends)
-  );
+
+  return false;
 };
 
 export default React.memo(VerticalBarChart, (prev, next) => !shouldChartRerender(prev, next));
